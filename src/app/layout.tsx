@@ -15,8 +15,7 @@ const jakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  // TODO: 배포 후 실제 도메인으로 교체
-  metadataBase: new URL("https://your-domain.com"),
+  metadataBase: new URL("https://comma-news.vercel.app"),
   title: "comma, — 모든 것에는 100가지 이유가 있다",
   description:
     "SNS에서 바로 공유할 수 있는 카드뉴스. 매일 새로운 영감을 콤마 하나에 담았습니다.",
@@ -58,6 +57,7 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
         <link
           rel="stylesheet"
           href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
