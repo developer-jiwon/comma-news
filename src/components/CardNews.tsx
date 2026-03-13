@@ -4,96 +4,64 @@ import { useState, useRef, useCallback, useEffect } from "react";
 import Image from "next/image";
 
 
-type CardTheme = "icy" | "cream" | "white" | "sunset" | "forest" | "noir" | "latte" | "peach" | "honey" | "rosewood";
+type CardTheme = "black" | "white" | "navy" | "cream" | "wine" | "sage" | "rust" | "mauve";
 
 const THEMES: Record<CardTheme, { bg: string; mesh: string; text: string; grid: string; label: string }> = {
-  icy: {
-    bg: "#0B1220",
-    mesh: `radial-gradient(ellipse 80% 70% at 20% 10%, #4A9AB540 0%, transparent 65%),
-           radial-gradient(ellipse 60% 70% at 80% 85%, #5B8FBE35 0%, transparent 60%),
-           radial-gradient(ellipse 50% 50% at 70% 30%, #5CC4C830 0%, transparent 55%)`,
-    text: "#E8F0F5",
-    grid: "rgba(255,255,255,0.03)",
-    label: "아이시 다크",
-  },
-  cream: {
-    bg: "#F5F0E8",
-    mesh: `radial-gradient(ellipse 80% 70% at 20% 10%, #E8D5B820 0%, transparent 65%),
-           radial-gradient(ellipse 60% 70% at 80% 85%, #D4C4A820 0%, transparent 60%),
-           radial-gradient(ellipse 50% 50% at 70% 30%, #C8B89020 0%, transparent 55%)`,
-    text: "#3D3428",
-    grid: "rgba(0,0,0,0.03)",
-    label: "크림",
+  black: {
+    bg: "#111111",
+    mesh: `linear-gradient(160deg, #181818 0%, #0E0E0E 100%)`,
+    text: "#EEEEEE",
+    grid: "rgba(255,255,255,0.025)",
+    label: "블랙",
   },
   white: {
-    bg: "#FFFFFF",
-    mesh: `radial-gradient(ellipse 80% 70% at 20% 10%, #F0F0F020 0%, transparent 65%),
-           radial-gradient(ellipse 60% 70% at 80% 85%, #E8E8E820 0%, transparent 60%)`,
+    bg: "#FAFAFA",
+    mesh: `linear-gradient(160deg, #FFFFFF 0%, #F5F5F5 100%)`,
     text: "#1A1A1A",
-    grid: "rgba(0,0,0,0.04)",
-    label: "화이트 클린",
-  },
-  sunset: {
-    bg: "#1A1020",
-    mesh: `radial-gradient(ellipse 80% 70% at 20% 10%, #E8886840 0%, transparent 65%),
-           radial-gradient(ellipse 60% 70% at 80% 85%, #C06C8435 0%, transparent 60%),
-           radial-gradient(ellipse 50% 50% at 70% 30%, #F0A05030 0%, transparent 55%)`,
-    text: "#F5E8E0",
-    grid: "rgba(255,255,255,0.03)",
-    label: "선셋",
-  },
-  forest: {
-    bg: "#0E1A14",
-    mesh: `radial-gradient(ellipse 80% 70% at 20% 10%, #4A8B6040 0%, transparent 65%),
-           radial-gradient(ellipse 60% 70% at 80% 85%, #6B9B7835 0%, transparent 60%),
-           radial-gradient(ellipse 50% 50% at 70% 30%, #3D7A5530 0%, transparent 55%)`,
-    text: "#E0F0E8",
-    grid: "rgba(255,255,255,0.03)",
-    label: "포레스트",
-  },
-  noir: {
-    bg: "#0A0A0A",
-    mesh: `radial-gradient(ellipse 80% 70% at 20% 10%, #33333340 0%, transparent 65%),
-           radial-gradient(ellipse 60% 70% at 80% 85%, #22222235 0%, transparent 60%)`,
-    text: "#E0E0E0",
-    grid: "rgba(255,255,255,0.04)",
-    label: "누아르",
-  },
-  latte: {
-    bg: "#2A2018",
-    mesh: `radial-gradient(ellipse 80% 70% at 20% 10%, #8B6E5040 0%, transparent 65%),
-           radial-gradient(ellipse 60% 70% at 80% 85%, #A0845835 0%, transparent 60%),
-           radial-gradient(ellipse 50% 50% at 70% 30%, #6B503830 0%, transparent 55%)`,
-    text: "#F0E6D8",
-    grid: "rgba(255,255,255,0.03)",
-    label: "라떼",
-  },
-  peach: {
-    bg: "#FFF5EE",
-    mesh: `radial-gradient(ellipse 80% 70% at 20% 10%, #FFB89A25 0%, transparent 65%),
-           radial-gradient(ellipse 60% 70% at 80% 85%, #FFA08020 0%, transparent 60%),
-           radial-gradient(ellipse 50% 50% at 70% 30%, #FFD0B820 0%, transparent 55%)`,
-    text: "#4A3028",
     grid: "rgba(0,0,0,0.03)",
-    label: "피치",
+    label: "화이트",
   },
-  honey: {
-    bg: "#1E1A0E",
-    mesh: `radial-gradient(ellipse 80% 70% at 20% 10%, #C8A04840 0%, transparent 65%),
-           radial-gradient(ellipse 60% 70% at 80% 85%, #D4A83035 0%, transparent 60%),
-           radial-gradient(ellipse 50% 50% at 70% 30%, #B8902030 0%, transparent 55%)`,
-    text: "#F5ECD0",
-    grid: "rgba(255,255,255,0.03)",
-    label: "허니",
+  navy: {
+    bg: "#141D2E",
+    mesh: `linear-gradient(160deg, #1A2540 0%, #101828 100%)`,
+    text: "#C8D4E8",
+    grid: "rgba(255,255,255,0.02)",
+    label: "네이비",
   },
-  rosewood: {
-    bg: "#1C1014",
-    mesh: `radial-gradient(ellipse 80% 70% at 20% 10%, #8B4A5840 0%, transparent 65%),
-           radial-gradient(ellipse 60% 70% at 80% 85%, #A0606835 0%, transparent 60%),
-           radial-gradient(ellipse 50% 50% at 70% 30%, #6B384530 0%, transparent 55%)`,
-    text: "#F0E0E5",
-    grid: "rgba(255,255,255,0.03)",
-    label: "로즈우드",
+  cream: {
+    bg: "#F5F0E4",
+    mesh: `linear-gradient(160deg, #FAF5EA 0%, #EDE8DC 100%)`,
+    text: "#2C2820",
+    grid: "rgba(0,0,0,0.025)",
+    label: "크림",
+  },
+  wine: {
+    bg: "#241418",
+    mesh: `linear-gradient(160deg, #2E1A20 0%, #1E1014 100%)`,
+    text: "#E8D0D4",
+    grid: "rgba(255,255,255,0.02)",
+    label: "와인",
+  },
+  sage: {
+    bg: "#1E2820",
+    mesh: `linear-gradient(160deg, #24302A 0%, #1A2218 100%)`,
+    text: "#D0E0D4",
+    grid: "rgba(255,255,255,0.02)",
+    label: "세이지",
+  },
+  rust: {
+    bg: "#F0E4D8",
+    mesh: `linear-gradient(160deg, #F5EAE0 0%, #E8DCD0 100%)`,
+    text: "#3A2820",
+    grid: "rgba(0,0,0,0.025)",
+    label: "러스트",
+  },
+  mauve: {
+    bg: "#F0E8EE",
+    mesh: `linear-gradient(160deg, #F5EDF4 0%, #E8E0E6 100%)`,
+    text: "#2E2430",
+    grid: "rgba(0,0,0,0.02)",
+    label: "모브",
   },
 };
 
@@ -135,7 +103,7 @@ export default function CardNews({
   showSave = false,
   titleSize,
   numbered = true,
-  cardTheme = "icy",
+  cardTheme = "black",
   pillColor = "#F5E050",
   onUpdate,
 }: CardNewsProps) {
@@ -156,7 +124,7 @@ export default function CardNews({
     setIsLocal(window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1");
   }, []);
 
-  const activeTheme = editing ? THEMES[editTheme] : THEMES[cardTheme];
+  const activeTheme = (editing ? THEMES[editTheme] : THEMES[cardTheme]) || THEMES.black;
   const themeText = activeTheme.text;
   const activePill = editing ? editPillColor : pillColor;
   const activePillText = PILL_COLORS.find((p) => p.value === activePill)?.textDark || "#333";
@@ -173,12 +141,13 @@ export default function CardNews({
       scale: 3,
       useCORS: true,
       backgroundColor: null,
+      ignoreElements: (el) => el.hasAttribute("data-html2canvas-ignore"),
     });
     canvas.toBlob(async (blob) => {
       if (!blob) return;
       const file = new File([blob], `comma-${title}-${currentCard}.png`, { type: "image/png" });
       if (navigator.share && navigator.canShare?.({ files: [file] })) {
-        await navigator.share({ files: [file] });
+        try { await navigator.share({ files: [file] }); } catch {}
       } else {
         const link = document.createElement("a");
         link.download = file.name;
@@ -192,7 +161,19 @@ export default function CardNews({
   return (
     <div className={`flex gap-5 w-full mx-auto ${editing ? "flex-row items-start max-w-4xl" : "flex-col items-center max-w-md"}`}>
       {/* Card column */}
-      <div className={`flex flex-col items-center gap-5 ${editing ? "w-[380px] flex-shrink-0 sticky top-6" : "w-full"}`}>
+      <div className={`flex flex-col items-center gap-3 ${editing ? "w-[380px] flex-shrink-0 sticky top-6" : "w-full"}`}>
+
+      {/* Save button — top center, above card */}
+      {showSave && (
+        <button
+          onClick={handleSave}
+          className="text-[10px] px-3 py-1 rounded-full transition-all hover:opacity-70"
+          style={{ backgroundColor: "rgba(0,0,0,0.06)", color: "#888" }}
+        >
+          이미지 저장
+        </button>
+      )}
+
       {/* Card — 4:5 aspect ratio for Instagram/Threads */}
       <div
         ref={cardRef}
@@ -253,7 +234,7 @@ export default function CardNews({
                 <div>
                   {onUpdate && isLocal && !editing && (
                     <button
-                      onClick={() => { setEditTitle(title); setEditItems(items.join("\n")); setEditTitleSize(titleSize || 26); setEditNumbered(numbered); setEditTheme(cardTheme); setEditPillColor(pillColor); setEditing(true); }}
+                      onClick={() => { setEditTitle(title); setEditItems(items.join("\n")); setEditTitleSize(titleSize || 26); setEditNumbered(numbered); setEditTheme(THEMES[cardTheme] ? cardTheme : "black"); setEditPillColor(pillColor); setEditing(true); }}
                       className="text-[10px] px-3 py-1 rounded-full transition-all hover:opacity-80 backdrop-blur-sm"
                       style={{ backgroundColor: "rgba(255,255,255,0.15)", color: "rgba(255,255,255,0.8)", border: "1px solid rgba(255,255,255,0.15)" }}
                     >
@@ -309,19 +290,19 @@ export default function CardNews({
           /* ===== ITEM CARDS ===== */
           <>
             {/* Theme base */}
-            <div className="absolute inset-0" style={{ backgroundColor: (editing ? THEMES[editTheme] : THEMES[cardTheme]).bg }} />
+            <div className="absolute inset-0" style={{ backgroundColor: activeTheme.bg }} />
 
             {/* Theme mesh gradient */}
             <div
               className="absolute inset-0"
-              style={{ background: (editing ? THEMES[editTheme] : THEMES[cardTheme]).mesh }}
+              style={{ background: activeTheme.mesh }}
             />
 
             {/* Fine grid */}
             <div
               className="absolute inset-0"
               style={{
-                backgroundImage: `linear-gradient(${(editing ? THEMES[editTheme] : THEMES[cardTheme]).grid} 1px, transparent 1px), linear-gradient(90deg, ${(editing ? THEMES[editTheme] : THEMES[cardTheme]).grid} 1px, transparent 1px)`,
+                backgroundImage: `linear-gradient(${activeTheme.grid} 1px, transparent 1px), linear-gradient(90deg, ${activeTheme.grid} 1px, transparent 1px)`,
                 backgroundSize: "32px 32px",
               }}
             />
@@ -373,7 +354,7 @@ export default function CardNews({
               </div>
 
               {/* Items */}
-              <div className="flex-1 flex flex-col justify-center gap-4">
+              <div className="flex flex-col gap-4">
                 {(editing ? editNumbered : numbered) ? (
                   currentItems.map((item, idx) => (
                     <div key={startIdx + idx} className="flex items-start gap-3.5">
@@ -407,9 +388,9 @@ export default function CardNews({
                 )}
               </div>
 
-              {/* Footer */}
+              {/* Footer — pinned to bottom */}
               <div
-                className="flex items-center justify-between mt-4 pt-4"
+                className="flex items-center justify-between mt-auto pt-4"
                 style={{ borderTop: `1px solid ${themeText}0a` }}
               >
                 <span
@@ -428,6 +409,7 @@ export default function CardNews({
             </div>
           </>
         )}
+
       </div>
 
       {/* Slider — minimal transparent */}
@@ -445,18 +427,7 @@ export default function CardNews({
         />
       </div>
 
-      {/* Action buttons */}
-      {showSave && (
-        <div className="flex gap-2">
-          <button
-            onClick={handleSave}
-            className="text-[12px] px-4 py-2 rounded-lg transition-all hover:opacity-80"
-            style={{ backgroundColor: "rgba(0,0,0,0.06)", color: "#666" }}
-          >
-            이미지 저장
-          </button>
-        </div>
-      )}
+      {/* no action buttons below card */}
       </div>
 
       {/* Inline editor */}

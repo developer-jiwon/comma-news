@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
       items: items ?? data[slug]?.items ?? [],
       titleSize: titleSize ?? data[slug]?.titleSize ?? 26,
       numbered: numbered ?? data[slug]?.numbered ?? true,
-      cardTheme: cardTheme ?? data[slug]?.cardTheme ?? "icy",
+      cardTheme: cardTheme ?? data[slug]?.cardTheme ?? "black",
       pillColor: pillColor ?? data[slug]?.pillColor ?? "#F5E050",
     };
 

@@ -9,7 +9,7 @@ export default function CategoryCardWithLocal({ volume }: { volume: Volume }) {
   const [title, setTitle] = useState<string>(volume.title);
   const [titleSize, setTitleSize] = useState<number>(volume.titleSize || 26);
   const [numbered, setNumbered] = useState<boolean>(volume.numbered ?? true);
-  const [cardTheme, setCardTheme] = useState<string>(volume.cardTheme || "icy");
+  const [cardTheme, setCardTheme] = useState<string>(volume.cardTheme || "black");
   const [pillColor, setPillColor] = useState<string>(volume.pillColor || "#F5E050");
 
   useEffect(() => {
@@ -118,6 +118,7 @@ export default function CategoryCardWithLocal({ volume }: { volume: Volume }) {
       numbered={numbered}
       cardTheme={cardTheme as any}
       pillColor={pillColor}
+      showSave
       onUpdate={handleUpdate}
     />
   );

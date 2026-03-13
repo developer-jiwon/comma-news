@@ -1,18 +1,26 @@
 {
   "selfcare-20man": {
-    "title": "월 20만원 셀프케어 루틴",
-    "items": [],
+    "title": "나 대체로 잘 지내\n그냥 번아웃이\n주기적으로 그 뿐",
+    "items": [
+      "날 잡고, 이불/매트리스, 베개 커버 빨래하기",
+      "예쁜 텀블러에 미지근한 물 충분히 마시기",
+      "수면 시간 7시간은 꼭 챙기기",
+      "기상 직후, 창문 열고 이불 팡팡 털기",
+      "샤워 후 꼭 바디로션 바르기(바이오더마 좋아요.)",
+      "양치 후 치실은 필수, 선택 아님",
+      "양치 후, 현관문 나서기 전 스쿼트 20개"
+    ],
     "titleSize": 26,
     "numbered": true,
-    "cardTheme": "icy",
+    "cardTheme": "black",
     "pillColor": "#F5E050"
   },
   "before-quitting": {
-    "title": "추천 영화 리스트",
+    "title": "내가 진짜 그래도\n죽기전에 해 볼 버킷리스트",
     "items": [],
     "titleSize": 26,
     "numbered": true,
-    "cardTheme": "icy",
+    "cardTheme": "black",
     "pillColor": "#F5E050"
   },
   "letter-to-past": {
@@ -20,7 +28,7 @@
     "items": [],
     "titleSize": 26,
     "numbered": true,
-    "cardTheme": "icy",
+    "cardTheme": "black",
     "pillColor": "#F5E050"
   },
   "best-office-life": {
@@ -28,7 +36,7 @@
     "items": [],
     "titleSize": 26,
     "numbered": true,
-    "cardTheme": "icy",
+    "cardTheme": "black",
     "pillColor": "#F5E050"
   }
 }
