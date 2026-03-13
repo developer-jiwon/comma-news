@@ -19,6 +19,7 @@ export const volumes: Volume[] = [
     colorLight: "#EAF4F6",
     cardBg: "#1A2A38",
     cardText: "#E8F0F5",
+    coverImage: "/cover-selfcare-20man.png",
     items: [],
   },
   {
@@ -29,6 +30,7 @@ export const volumes: Volume[] = [
     colorLight: "#EEF1F7",
     cardBg: "#1C2440",
     cardText: "#E5EAF3",
+    coverImage: "/cover-before-quitting.png",
     items: [],
   },
   {
@@ -39,6 +41,7 @@ export const volumes: Volume[] = [
     colorLight: "#E6F4F3",
     cardBg: "#1A3030",
     cardText: "#E0F0EF",
+    coverImage: "/cover-letter-to-past.png",
     items: [],
   },
   {
@@ -49,6 +52,7 @@ export const volumes: Volume[] = [
     colorLight: "#ECF0F7",
     cardBg: "#1B2538",
     cardText: "#E3EAF5",
+    coverImage: "/cover-best-office-life.png",
     items: [],
   },
 ];
