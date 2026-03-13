@@ -7,12 +7,13 @@ import CardNews from "./CardNews";
 export default function CategoryCardWithLocal({ volume }: { volume: Volume }) {
   const [items, setItems] = useState<string[]>(volume.items);
   const [title, setTitle] = useState<string>(volume.title);
-  const [titleSize, setTitleSize] = useState<number>(26);
-  const [numbered, setNumbered] = useState<boolean>(true);
-  const [cardTheme, setCardTheme] = useState<string>("icy");
-  const [pillColor, setPillColor] = useState<string>("#F5E050");
+  const [titleSize, setTitleSize] = useState<number>(volume.titleSize || 26);
+  const [numbered, setNumbered] = useState<boolean>(volume.numbered ?? true);
+  const [cardTheme, setCardTheme] = useState<string>(volume.cardTheme || "icy");
+  const [pillColor, setPillColor] = useState<string>(volume.pillColor || "#F5E050");
 
   useEffect(() => {
+    // localStorage overrides for live editing (fallback to volume defaults from JSON)
     const savedItems = localStorage.getItem("comma-items");
     const savedTitles = localStorage.getItem("comma-titles");
     const savedSizes = localStorage.getItem("comma-title-sizes");
@@ -46,6 +47,7 @@ export default function CategoryCardWithLocal({ volume }: { volume: Volume }) {
   }, [volume.slug]);
 
   const handleUpdate = useCallback((newTitle: string, newItems: string[], newTitleSize?: number, newNumbered?: boolean, newTheme?: string, newPillColor?: string) => {
+    // Save to localStorage (for immediate preview)
     const savedItems = localStorage.getItem("comma-items");
     const savedTitles = localStorage.getItem("comma-titles");
     const savedSizes = localStorage.getItem("comma-title-sizes");
@@ -87,7 +89,22 @@ export default function CategoryCardWithLocal({ volume }: { volume: Volume }) {
     setItems(newItems);
     setTitle(newTitle);
     if (newTitleSize) setTitleSize(newTitleSize);
-  }, [volume.slug]);
+
+    // Sync to file via API (localhost only — writes to volume-content.json)
+    fetch("/api/sync-data", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        slug: volume.slug,
+        title: newTitle,
+        items: newItems,
+        titleSize: newTitleSize || titleSize,
+        numbered: newNumbered ?? numbered,
+        cardTheme: newTheme || cardTheme,
+        pillColor: newPillColor || pillColor,
+      }),
+    }).catch(() => {});
+  }, [volume.slug, titleSize, numbered, cardTheme, pillColor]);
 
   return (
     <CardNews

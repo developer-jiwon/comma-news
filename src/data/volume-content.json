@@ -1,0 +1,34 @@
+{
+  "selfcare-20man": {
+    "title": "월 20만원 셀프케어 루틴",
+    "items": [],
+    "titleSize": 26,
+    "numbered": true,
+    "cardTheme": "icy",
+    "pillColor": "#F5E050"
+  },
+  "before-quitting": {
+    "title": "추천 영화 리스트",
+    "items": [],
+    "titleSize": 26,
+    "numbered": true,
+    "cardTheme": "icy",
+    "pillColor": "#F5E050"
+  },
+  "letter-to-past": {
+    "title": "10년 전 나에게 하고 싶은 말",
+    "items": [],
+    "titleSize": 26,
+    "numbered": true,
+    "cardTheme": "icy",
+    "pillColor": "#F5E050"
+  },
+  "best-office-life": {
+    "title": "직장인으로써 할 수 있는 최선의 삶",
+    "items": [],
+    "titleSize": 26,
+    "numbered": true,
+    "cardTheme": "icy",
+    "pillColor": "#F5E050"
+  }
+}
