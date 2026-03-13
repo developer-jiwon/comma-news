@@ -119,20 +119,18 @@ export default function VolumeAccordion({
                   </div>
                 ))}
 
-                {/* See all CTA */}
-                {vol.items.length > 10 && (
-                  <a
-                    href={`/category/${vol.slug}`}
-                    className="flex items-center gap-2 mt-4 ml-4 text-[13px] font-medium transition-opacity hover:opacity-70"
-                    style={{
-                      color: "#2C2C2C",
-                      opacity: isOpen ? 1 : 0,
-                      transitionDelay: isOpen ? "400ms" : "0ms",
-                    }}
-                  >
-                    <span>전체 {vol.items.length}개 보기 →</span>
-                  </a>
-                )}
+                {/* See all CTA — always visible */}
+                <a
+                  href={`/category/${vol.slug}`}
+                  className="flex items-center gap-2 mt-4 ml-4 text-[13px] font-medium transition-opacity hover:opacity-70"
+                  style={{
+                    color: vol.color,
+                    opacity: isOpen ? 1 : 0,
+                    transitionDelay: isOpen ? "400ms" : "0ms",
+                  }}
+                >
+                  <span>카드뉴스 전체보기 →</span>
+                </a>
               </div>
 
               {/* Bottom divider */}
