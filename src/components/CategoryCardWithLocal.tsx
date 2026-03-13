@@ -28,6 +28,7 @@ export default function CategoryCardWithLocal({ volume }: { volume: Volume }) {
       color={volume.color}
       cardBg={volume.cardBg}
       cardText={volume.cardText}
+      coverImage={volume.coverImage}
     />
   );
 }

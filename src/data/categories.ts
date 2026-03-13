@@ -6,6 +6,7 @@ export interface Volume {
   colorLight: string;
   cardBg: string;
   cardText: string;
+  coverImage?: string; // optional cover photo URL
   items: string[];
 }
 

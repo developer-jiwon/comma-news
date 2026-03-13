@@ -215,6 +215,7 @@ export default function AdminManager() {
               color={volume.color}
               cardBg={volume.cardBg}
               cardText={volume.cardText}
+              coverImage={volume.coverImage}
               showSave
             />
           </section>
