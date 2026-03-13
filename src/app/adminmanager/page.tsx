@@ -130,10 +130,10 @@ export default function AdminManager() {
               <Image
                 src="/comma-logo.png"
                 alt="comma"
-                width={48}
-                height={48}
+                width={28}
+                height={28}
                 className="object-contain -mr-1"
-                style={{ width: 48, height: 48 }}
+                style={{ width: 28, height: 28 }}
               />
               <span
                 className="font-serif text-lg font-semibold"

@@ -25,7 +25,7 @@ export const volumes: Volume[] = [
   {
     slug: "before-quitting",
     vol: "02",
-    title: "퇴사 전 반드시 해야 할 것",
+    title: "추천 영화 리스트",
     color: "#8B9DBF",
     colorLight: "#EEF1F7",
     cardBg: "#1C2440",

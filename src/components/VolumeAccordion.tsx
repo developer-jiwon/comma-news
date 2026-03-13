@@ -4,11 +4,13 @@ import { useState } from "react";
 import Image from "next/image";
 import type { Volume } from "@/data/categories";
 
+interface VolumeAccordionProps {
+  volumes: Volume[];
+}
+
 export default function VolumeAccordion({
   volumes,
-}: {
-  volumes: Volume[];
-}) {
+}: VolumeAccordionProps) {
   const [openVol, setOpenVol] = useState<string | null>(null);
 
   return (
@@ -90,15 +92,12 @@ export default function VolumeAccordion({
                     className="flex items-center gap-3.5 py-2.5 pl-4 transition-all"
                     style={{
                       opacity: isOpen ? 1 : 0,
-                      transform: isOpen
-                        ? "translateX(0)"
-                        : "translateX(-12px)",
+                      transform: isOpen ? "translateX(0)" : "translateX(-12px)",
                       transitionDelay: isOpen ? `${idx * 40}ms` : "0ms",
                       transitionDuration: "400ms",
                       transitionTimingFunction: "cubic-bezier(0.22, 1, 0.36, 1)",
                     }}
                   >
-                    {/* Step number */}
                     <span
                       className="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold flex-shrink-0"
                       style={{
@@ -108,8 +107,6 @@ export default function VolumeAccordion({
                     >
                       {idx + 1}
                     </span>
-
-                    {/* Item text */}
                     <span
                       className="text-[14px] leading-snug"
                       style={{ color: "#444" }}
@@ -119,21 +116,22 @@ export default function VolumeAccordion({
                   </div>
                 ))}
 
-                {/* See all CTA — always visible */}
+                {/* See all CTA — pill style, fast appear */}
                 <a
                   href={`/category/${vol.slug}`}
-                  className="flex items-center gap-2 mt-4 ml-4 text-[13px] font-medium transition-opacity hover:opacity-70"
+                  className="inline-flex items-center gap-1.5 mt-4 ml-4 text-[12px] font-medium px-4 py-2 rounded-full transition-all hover:opacity-80"
                   style={{
-                    color: vol.color,
+                    backgroundColor: vol.color,
+                    color: "#fff",
                     opacity: isOpen ? 1 : 0,
-                    transitionDelay: isOpen ? "400ms" : "0ms",
+                    transitionDelay: isOpen ? "100ms" : "0ms",
+                    transitionDuration: "200ms",
                   }}
                 >
-                  <span>카드뉴스 전체보기 →</span>
+                  카드뉴스 전체보기 →
                 </a>
               </div>
 
-              {/* Bottom divider */}
               <div
                 className="h-px"
                 style={{ background: "rgba(0,0,0,0.06)" }}
