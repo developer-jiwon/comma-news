@@ -466,7 +466,7 @@ export default function CardNews({
           <textarea
             value={editTitle}
             onChange={(e) => setEditTitle(e.target.value)}
-            className="w-full rounded-lg border px-3 py-2 text-[14px] font-semibold mb-3 resize-none"
+            className="w-full rounded-lg border px-3 py-2 text-[12px] font-medium mb-3 resize-none"
             style={{ borderColor: "rgba(0,0,0,0.1)", color: "#333", minHeight: 60 }}
           />
           <p className="text-[11px] font-mono mb-1" style={{ color: "#999" }}>제목 폰트 크기: {editTitleSize}px</p>
