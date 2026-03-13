@@ -39,10 +39,19 @@ export default function CardNews({
       useCORS: true,
       backgroundColor: null,
     });
-    const link = document.createElement("a");
-    link.download = `comma-${title}-${currentCard + 1}.png`;
-    link.href = canvas.toDataURL("image/png");
-    link.click();
+    canvas.toBlob(async (blob) => {
+      if (!blob) return;
+      const file = new File([blob], `comma-${title}-${currentCard + 1}.png`, { type: "image/png" });
+      if (navigator.share && navigator.canShare?.({ files: [file] })) {
+        await navigator.share({ files: [file] });
+      } else {
+        const link = document.createElement("a");
+        link.download = file.name;
+        link.href = URL.createObjectURL(blob);
+        link.click();
+        URL.revokeObjectURL(link.href);
+      }
+    }, "image/png");
   }, [title, currentCard]);
 
   return (
