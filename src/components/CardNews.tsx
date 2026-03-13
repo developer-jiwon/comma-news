@@ -115,50 +115,45 @@ export default function CardNews({
             />
 
             {/* Cover content */}
-            <div className="relative flex flex-col h-full px-10 pt-10 pb-10">
-              {/* Top: logo + handle */}
-              <div className="flex items-center justify-between">
-                <div className="flex items-center">
-                  <Image
-                    src="/comma-icon-light.png"
-                    alt=""
-                    width={22}
-                    height={22}
-                    className="object-contain -mr-0.5"
-                    style={{ width: 22, height: 22 }}
-                  />
-                  <span
-                    className="text-[12px] tracking-wide font-serif font-medium"
-                    style={{ color: "rgba(255,255,255,0.5)" }}
-                  >
-                    comma,
-                  </span>
-                </div>
-                <span
-                  className="text-[11px] font-medium"
-                  style={{ color: "rgba(255,255,255,0.4)" }}
-                >
-                  @jiwonnnnieee
-                </span>
-              </div>
+            <div className="relative flex flex-col items-center justify-center h-full px-10 pt-10 pb-10">
+              {/* Center: @handle */}
+              <span
+                className="text-[22px] font-semibold tracking-wide"
+                style={{ color: "rgba(255,255,255,0.9)" }}
+              >
+                @jiwonnnnieee
+              </span>
 
-              {/* Spacer */}
-              <div className="flex-1" />
-
-              {/* Bottom: big title */}
-              <div>
+              {/* Bottom-left: title + comma branding */}
+              <div className="absolute bottom-10 left-10 right-10">
                 <h2
-                  className="text-[32px] font-bold leading-[1.25] mb-4"
+                  className="text-[28px] font-bold leading-[1.25] mb-3"
                   style={{ color: "#fff" }}
                 >
                   {title}
                 </h2>
-                <p
-                  className="text-[13px] leading-relaxed"
-                  style={{ color: "rgba(255,255,255,0.45)" }}
-                >
-                  100가지 이유를 찾아가는 여정
-                </p>
+                <div className="flex items-center">
+                  <Image
+                    src="/comma-icon-light.png"
+                    alt=""
+                    width={18}
+                    height={18}
+                    className="object-contain -mr-0.5"
+                    style={{ width: 18, height: 18 }}
+                  />
+                  <span
+                    className="text-[11px] tracking-wide font-serif font-medium"
+                    style={{ color: "rgba(255,255,255,0.45)" }}
+                  >
+                    comma,
+                  </span>
+                  <span
+                    className="text-[11px] ml-2"
+                    style={{ color: "rgba(255,255,255,0.35)" }}
+                  >
+                    100가지 이유를 찾아가는 여정
+                  </span>
+                </div>
               </div>
             </div>
           </>
