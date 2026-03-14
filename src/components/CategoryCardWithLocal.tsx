@@ -7,15 +7,15 @@ import CardNews from "./CardNews";
 export default function CategoryCardWithLocal({ volume }: { volume: Volume }) {
   const [items, setItems] = useState<string[]>(volume.items);
   const [title, setTitle] = useState<string>(volume.title);
-  const [titleSize, setTitleSize] = useState<number>(volume.titleSize || 26);
+  const [titleSize, setTitleSize] = useState<number>(volume.titleSize || 19);
   const [coverTitleSize, setCoverTitleSize] = useState<number>((volume as any).coverTitleSize || 34);
   const [numbered, setNumbered] = useState<boolean>(volume.numbered ?? true);
   const [cardTheme, setCardTheme] = useState<string>(volume.cardTheme || "black");
   const [pillColor, setPillColor] = useState<string>(volume.pillColor || "#F5E050");
   const [fontColor, setFontColor] = useState<string>((volume as any).fontColor || "");
-  const [boldCoverTitle, setBoldCoverTitle] = useState<boolean>((volume as any).boldCoverTitle || false);
-  const [boldCardTitle, setBoldCardTitle] = useState<boolean>((volume as any).boldCardTitle || false);
-  const [boldItems, setBoldItems] = useState<boolean>((volume as any).boldItems || false);
+  const [boldCoverTitle, setBoldCoverTitle] = useState<boolean>((volume as any).boldCoverTitle ?? true);
+  const [boldCardTitle, setBoldCardTitle] = useState<boolean>((volume as any).boldCardTitle ?? true);
+  const [boldItems, setBoldItems] = useState<boolean>((volume as any).boldItems ?? true);
 
   useEffect(() => {
     // localStorage overrides for live editing (fallback to volume defaults from JSON)

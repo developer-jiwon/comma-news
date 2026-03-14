@@ -117,9 +117,9 @@ export default function CardNews({
   cardTheme = "black",
   pillColor = "#F5E050",
   fontColor = "",
-  boldCoverTitle = false,
-  boldCardTitle = false,
-  boldItems = false,
+  boldCoverTitle = true,
+  boldCardTitle = true,
+  boldItems = true,
   onUpdate,
 }: CardNewsProps) {
   const itemCards = Math.ceil(items.length / itemsPerCard);
@@ -129,7 +129,7 @@ export default function CardNews({
   const [editing, setEditing] = useState(false);
   const [editTitle, setEditTitle] = useState(title);
   const [editItems, setEditItems] = useState(items.join("\n"));
-  const [editTitleSize, setEditTitleSize] = useState(titleSize || 26);
+  const [editTitleSize, setEditTitleSize] = useState(titleSize || 19);
   const [editCoverTitleSize, setEditCoverTitleSize] = useState(coverTitleSize || 34);
   const [editNumbered, setEditNumbered] = useState(numbered);
   const [editTheme, setEditTheme] = useState<CardTheme>(cardTheme);
@@ -159,7 +159,7 @@ export default function CardNews({
       setPwInput("");
       setPwError(false);
       // 인증 후 바로 편집 모드 진입
-      setEditTitle(title); setEditItems(items.join("\n")); setEditTitleSize(titleSize || 26); setEditCoverTitleSize(coverTitleSize || 34); setEditNumbered(numbered); setEditTheme(THEMES[cardTheme] ? cardTheme : "black"); setEditPillColor(pillColor); setEditFontColor(fontColor); setEditBoldCoverTitle(boldCoverTitle); setEditBoldCardTitle(boldCardTitle); setEditBoldItems(boldItems); setEditing(true);
+      setEditTitle(title); setEditItems(items.join("\n")); setEditTitleSize(titleSize || 19); setEditCoverTitleSize(coverTitleSize || 34); setEditNumbered(numbered); setEditTheme(THEMES[cardTheme] ? cardTheme : "black"); setEditPillColor(pillColor); setEditFontColor(fontColor); setEditBoldCoverTitle(boldCoverTitle); setEditBoldCardTitle(boldCardTitle); setEditBoldItems(boldItems); setEditing(true);
     } else {
       setPwError(true);
     }
@@ -308,7 +308,7 @@ export default function CardNews({
                     <button
                       onClick={() => {
                         if (isAuthed || isLocal) {
-                          setEditTitle(title); setEditItems(items.join("\n")); setEditTitleSize(titleSize || 26); setEditCoverTitleSize(coverTitleSize || 34); setEditNumbered(numbered); setEditTheme(THEMES[cardTheme] ? cardTheme : "black"); setEditPillColor(pillColor); setEditFontColor(fontColor); setEditBoldCoverTitle(boldCoverTitle); setEditBoldCardTitle(boldCardTitle); setEditBoldItems(boldItems); setEditing(true);
+                          setEditTitle(title); setEditItems(items.join("\n")); setEditTitleSize(titleSize || 19); setEditCoverTitleSize(coverTitleSize || 34); setEditNumbered(numbered); setEditTheme(THEMES[cardTheme] ? cardTheme : "black"); setEditPillColor(pillColor); setEditFontColor(fontColor); setEditBoldCoverTitle(boldCoverTitle); setEditBoldCardTitle(boldCardTitle); setEditBoldItems(boldItems); setEditing(true);
                         } else {
                           setShowPwModal(true); setPwInput(""); setPwError(false);
                         }
@@ -419,7 +419,7 @@ export default function CardNews({
                 </div>
                 <h2
                   className={`tracking-[0.04em] leading-tight whitespace-pre-line ${activeBoldCard ? "font-bold" : "font-light"}`}
-                  style={{ color: themeText, fontSize: `${editing ? editTitleSize : (titleSize || 26)}px` }}
+                  style={{ color: themeText, fontSize: `${editing ? editTitleSize : (titleSize || 19)}px` }}
                 >
                   {title}
                 </h2>
