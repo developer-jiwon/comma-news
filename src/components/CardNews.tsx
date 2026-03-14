@@ -54,16 +54,7 @@ const THEMES: Record<CardTheme, { bg: string; mesh: string; text: string; grid: 
 const FONT_COLORS: { value: string; label: string }[] = [
   { value: "", label: "기본" },
   { value: "#FFFFFF", label: "흰색" },
-  { value: "#EEEEEE", label: "밝은회" },
   { value: "#1A1A1A", label: "검정" },
-  { value: "#333333", label: "진회" },
-  { value: "#C8D4E8", label: "라이트블루" },
-  { value: "#2C2820", label: "다크브라운" },
-  { value: "#F5E050", label: "레몬" },
-  { value: "#FF9F68", label: "오렌지" },
-  { value: "#FF8FA3", label: "핑크" },
-  { value: "#A0D8B0", label: "민트" },
-  { value: "#88C4F4", label: "스카이" },
 ];
 
 const PILL_COLORS: { value: string; label: string; textDark: string }[] = [
@@ -635,7 +626,7 @@ export default function CardNews({
                 className="text-[10px] px-2.5 py-1 rounded-full font-medium transition-all flex items-center gap-1"
                 style={{
                   backgroundColor: editFontColor === fc.value ? (fc.value || activeTheme.text) : "rgba(0,0,0,0.05)",
-                  color: editFontColor === fc.value ? (fc.value ? (["#FFFFFF","#EEEEEE","#F5E050","#A0D8B0","#88C4F4","#FF8FA3","#FF9F68"].includes(fc.value) ? "#333" : "#fff") : "#fff") : "#888",
+                  color: editFontColor === fc.value ? (fc.value === "#FFFFFF" || !fc.value ? "#333" : "#fff") : "#888",
                   border: editFontColor === fc.value ? `2px solid ${color}` : "2px solid transparent",
                 }}
               >
