@@ -81,7 +81,7 @@ export const volumes: Volume[] = [
     colorLight: "#ECF0F7",
     cardBg: "#1B2538",
     cardText: "#E3EAF5",
-    // coverImage: "/cover-best-office-life.png",
+    coverImage: "/cover-best-office-life.png",
     items: content["best-office-life"]?.items || [],
     titleSize: content["best-office-life"]?.titleSize,
     numbered: content["best-office-life"]?.numbered,
