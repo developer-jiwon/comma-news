@@ -124,7 +124,7 @@ export default function CardNews({
     const updateScale = () => {
       if (cardRef.current) {
         const w = cardRef.current.offsetWidth;
-        setCardScale(Math.min(w / DESIGN_WIDTH, 1));
+        setCardScale(w / DESIGN_WIDTH);
       }
     };
     updateScale();

@@ -29,10 +29,25 @@ type ContentMap = Record<string, {
 
 const content: ContentMap = volumeContent;
 
-export const volumes: Volume[] = [
+const allVolumes: Volume[] = [
+  {
+    slug: "vol-05",
+    vol: "01",
+    title: content["vol-05"]?.title || "제가 24시간이 조금 부족하긴 해요. 나 활용법",
+    color: "#A0897B",
+    colorLight: "#F5F0EC",
+    cardBg: "#2A2018",
+    cardText: "#F0E6D8",
+    coverImage: "/cover-vol-05.png",
+    items: content["vol-05"]?.items || [],
+    titleSize: content["vol-05"]?.titleSize,
+    numbered: content["vol-05"]?.numbered,
+    cardTheme: content["vol-05"]?.cardTheme,
+    pillColor: content["vol-05"]?.pillColor,
+  },
   {
     slug: "selfcare-20man",
-    vol: "01",
+    vol: "02",
     title: content["selfcare-20man"]?.title || "월 20만원 셀프케어 루틴",
     color: "#7CABB8",
     colorLight: "#EAF4F6",
@@ -47,7 +62,7 @@ export const volumes: Volume[] = [
   },
   {
     slug: "before-quitting",
-    vol: "02",
+    vol: "03",
     title: content["before-quitting"]?.title || "추천 영화 리스트",
     color: "#8B9DBF",
     colorLight: "#EEF1F7",
@@ -62,7 +77,7 @@ export const volumes: Volume[] = [
   },
   {
     slug: "letter-to-past",
-    vol: "03",
+    vol: "04",
     title: content["letter-to-past"]?.title || "10년 전 나에게 하고 싶은 말",
     color: "#6BA8A5",
     colorLight: "#E6F4F3",
@@ -77,7 +92,7 @@ export const volumes: Volume[] = [
   },
   {
     slug: "best-office-life",
-    vol: "04",
+    vol: "05",
     title: content["best-office-life"]?.title || "직장인으로서 할 수 있는 최선의 삶",
     color: "#7B93B8",
     colorLight: "#ECF0F7",
@@ -89,21 +104,6 @@ export const volumes: Volume[] = [
     numbered: content["best-office-life"]?.numbered,
     cardTheme: content["best-office-life"]?.cardTheme,
     pillColor: content["best-office-life"]?.pillColor,
-  },
-  {
-    slug: "vol-05",
-    vol: "05",
-    title: content["vol-05"]?.title || "미정",
-    color: "#A0897B",
-    colorLight: "#F5F0EC",
-    cardBg: "#2A2018",
-    cardText: "#F0E6D8",
-    coverImage: "/cover-vol-05.png",
-    items: content["vol-05"]?.items || [],
-    titleSize: content["vol-05"]?.titleSize,
-    numbered: content["vol-05"]?.numbered,
-    cardTheme: content["vol-05"]?.cardTheme,
-    pillColor: content["vol-05"]?.pillColor,
   },
   {
     slug: "vol-06",
@@ -136,6 +136,11 @@ export const volumes: Volume[] = [
     pillColor: content["vol-07"]?.pillColor,
   },
 ];
+
+// "미정" 볼륨은 content에 title이 설정될 때까지 숨기기
+export const volumes: Volume[] = allVolumes.filter(
+  (v) => content[v.slug]?.title !== undefined || !v.title.includes("미정")
+);
 
 export function getVolumeBySlug(slug: string): Volume | undefined {
   return volumes.find((v) => v.slug === slug);
