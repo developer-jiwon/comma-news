@@ -272,12 +272,6 @@ export default function CardNews({
                 >
                   {title}
                 </h2>
-                <p
-                  className="text-[11px] mb-1.5"
-                  style={{ color: "rgba(255,255,255,0.35)" }}
-                >
-                  100가지 이유를 찾아가는 여정
-                </p>
                 <div className="flex items-center">
                   <Image
                     src="/comma-icon-light.png"
@@ -292,6 +286,12 @@ export default function CardNews({
                     style={{ color: "rgba(255,255,255,0.4)" }}
                   >
                     comma,
+                  </span>
+                  <span
+                    className="text-[10px] ml-2 font-light tracking-[0.04em]"
+                    style={{ color: "rgba(255,255,255,0.3)" }}
+                  >
+                    100가지 이유를 찾아가는 여정
                   </span>
                 </div>
               </div>

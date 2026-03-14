@@ -5,9 +5,10 @@ import Image from "next/image";
 
 interface MainHeaderProps {
   onAddVolume?: (title: string, slug: string) => void;
+  subtitle?: string;
 }
 
-export default function MainHeader({ onAddVolume }: MainHeaderProps) {
+export default function MainHeader({ onAddVolume, subtitle }: MainHeaderProps) {
   const [isLocal, setIsLocal] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [newTitle, setNewTitle] = useState("");
@@ -56,6 +57,14 @@ export default function MainHeader({ onAddVolume }: MainHeaderProps) {
             comma,
           </span>
         </button>
+        {subtitle && (
+          <span
+            className="ml-3 text-[13px] font-light tracking-[0.04em]"
+            style={{ color: "#999" }}
+          >
+            {subtitle}
+          </span>
+        )}
       </nav>
 
       {/* Add Volume Modal */}
