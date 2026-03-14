@@ -146,7 +146,8 @@ export default function CardNews({
     canvas.toBlob(async (blob) => {
       if (!blob) return;
       const file = new File([blob], `comma-${title}-${currentCard}.png`, { type: "image/png" });
-      if (navigator.share && navigator.canShare?.({ files: [file] })) {
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+      if (isMobile && navigator.share && navigator.canShare?.({ files: [file] })) {
         try { await navigator.share({ files: [file] }); } catch {}
       } else {
         const link = document.createElement("a");
