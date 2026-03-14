@@ -320,9 +320,9 @@ export default function CardNews({
             </div>
 
             {/* Card content */}
-            <div className="relative flex flex-col h-full px-10 pt-10 pb-8">
+            <div className="relative flex flex-col h-full px-7 pt-7 pb-6">
               {/* Header */}
-              <div className="mb-6">
+              <div className="mb-4">
                 <div className="flex items-center mb-3">
                   <Image
                     src="/comma-icon-light.png"
@@ -345,16 +345,10 @@ export default function CardNews({
                 >
                   {title}
                 </h2>
-                <p
-                  className="text-[11px] mt-2 leading-relaxed"
-                  style={{ color: `${themeText}55` }}
-                >
-                  100가지 이유를 찾아가는 여정
-                </p>
               </div>
 
               {/* Items */}
-              <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-2.5">
                 {(editing ? editNumbered : numbered) ? (
                   currentItems.map((item, idx) => (
                     <div key={startIdx + idx} className="flex items-start gap-3.5">

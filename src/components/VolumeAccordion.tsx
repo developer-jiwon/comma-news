@@ -24,57 +24,59 @@ export default function VolumeAccordion({
             {/* Volume Header */}
             <button
               onClick={() => setOpenVol(isOpen ? null : vol.slug)}
-              className="w-full flex items-center gap-4 py-5 text-left transition-all duration-200 group"
+              className="w-full flex flex-col gap-1.5 py-5 text-left transition-all duration-200 group"
               style={{
                 borderBottom: !isOpen ? "1px solid rgba(0,0,0,0.06)" : "none",
               }}
             >
-              {/* Comma icon + number */}
-              <span className="flex items-center flex-shrink-0">
-                <Image
-                  src="/comma-icon-light.png"
-                  alt=""
-                  width={20}
-                  height={20}
-                  className="object-contain -mr-0.5"
-                  style={{ width: 20, height: 20 }}
-                />
-                <span
-                  className="text-[13px] font-mono font-bold"
-                  style={{ color: "#555" }}
-                >
-                  {vol.vol}
+              {/* Top row: icon + number + count + chevron */}
+              <div className="flex items-center justify-between w-full">
+                <span className="flex items-center">
+                  <Image
+                    src="/comma-icon-light.png"
+                    alt=""
+                    width={16}
+                    height={16}
+                    className="object-contain -mr-0.5"
+                    style={{ width: 16, height: 16 }}
+                  />
+                  <span
+                    className="text-[11px] font-mono font-bold"
+                    style={{ color: "#999" }}
+                  >
+                    {vol.vol}
+                  </span>
                 </span>
-              </span>
+                <span className="flex items-center gap-1.5">
+                  <span
+                    className="text-[11px] font-mono tabular-nums"
+                    style={{ color: "#BBB" }}
+                  >
+                    {vol.items.length}
+                  </span>
+                  <svg
+                    className="w-3.5 h-3.5 transition-transform duration-300"
+                    style={{
+                      color: "#BBB",
+                      transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
+                    }}
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    <path d="M6 9l6 6 6-6" />
+                  </svg>
+                </span>
+              </div>
 
-              {/* Title */}
+              {/* Title below */}
               <span
-                className="flex-1 text-[15px] font-semibold transition-colors duration-200"
+                className="text-[15px] font-semibold transition-colors duration-200"
                 style={{ color: isOpen ? "#2C2C2C" : "#444" }}
               >
                 {vol.title}
               </span>
-
-              {/* Count + Chevron */}
-              <span
-                className="text-[11px] font-mono tabular-nums mr-1"
-                style={{ color: "#BBB" }}
-              >
-                {vol.items.length}
-              </span>
-              <svg
-                className="w-4 h-4 flex-shrink-0 transition-transform duration-300"
-                style={{
-                  color: "#BBB",
-                  transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
-                }}
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path d="M6 9l6 6 6-6" />
-              </svg>
             </button>
 
             {/* Dropdown content */}
