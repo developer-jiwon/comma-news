@@ -145,13 +145,18 @@ export default function CardNews({
     });
     canvas.toBlob(async (blob) => {
       if (!blob) return;
-      const file = new File([blob], `comma-${title}-${currentCard}.png`, { type: "image/png" });
       const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-      if (isMobile && navigator.share && navigator.canShare?.({ files: [file] })) {
-        try { await navigator.share({ files: [file] }); } catch {}
+      if (isMobile) {
+        // 모바일: 이미지를 새 탭에 열어서 꾹 눌러 저장
+        const url = URL.createObjectURL(blob);
+        const w = window.open("");
+        if (w) {
+          w.document.write(`<html><head><title>꾹 눌러서 사진 저장</title><meta name="viewport" content="width=device-width,initial-scale=1"></head><body style="margin:0;display:flex;align-items:center;justify-content:center;min-height:100vh;background:#000"><img src="${url}" style="max-width:100%;max-height:100vh" /></body></html>`);
+          w.document.close();
+        }
       } else {
         const link = document.createElement("a");
-        link.download = file.name;
+        link.download = `comma-${title}-${currentCard}.png`;
         link.href = URL.createObjectURL(blob);
         link.click();
         URL.revokeObjectURL(link.href);
@@ -257,7 +262,7 @@ export default function CardNews({
               {/* Bottom-left: title + branding */}
               <div>
                 <h2
-                  className="font-bold leading-[1.25] mb-3 whitespace-pre-line"
+                  className="font-light tracking-[0.04em] leading-[1.25] mb-3 whitespace-pre-line"
                   style={{ color: "#fff", fontSize: `${(editing ? editTitleSize : (titleSize || 26)) + 8}px` }}
                 >
                   {title}
@@ -341,7 +346,7 @@ export default function CardNews({
                   </span>
                 </div>
                 <h2
-                  className="font-semibold leading-tight whitespace-pre-line"
+                  className="font-light tracking-[0.04em] leading-tight whitespace-pre-line"
                   style={{ color: themeText, fontSize: `${editing ? editTitleSize : (titleSize || 26)}px` }}
                 >
                   {title}

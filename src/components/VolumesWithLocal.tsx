@@ -74,13 +74,13 @@ export default function VolumesWithLocal() {
         <div className="flex flex-col">
           <h1 className="leading-[1.35]">
             <span
-              className="text-[28px] sm:text-[32px] block font-semibold"
+              className="text-[28px] sm:text-[32px] block font-light tracking-[0.04em]"
               style={{ color: "#2C2C2C" }}
             >
               100가지 이유를
             </span>
             <span
-              className="text-[28px] sm:text-[32px] block font-semibold"
+              className="text-[28px] sm:text-[32px] block font-light tracking-[0.04em]"
               style={{ color: "#2C2C2C" }}
             >
               찾아가는 여정
