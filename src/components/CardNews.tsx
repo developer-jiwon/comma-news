@@ -321,21 +321,21 @@ export default function CardNews({
             </div>
 
             {/* Card content */}
-            <div className="relative flex flex-col h-full px-7 pt-7 pb-6">
-              {/* Header */}
-              <div className="mb-4">
-                <div className="flex items-center mb-3">
+            <div className="relative flex flex-col h-full px-7 pt-5 pb-6">
+              {/* Header — compact */}
+              <div className="mb-2">
+                <div className="flex items-center mb-1.5">
                   <Image
                     src="/comma-icon-light.png"
                     alt=""
-                    width={22}
-                    height={22}
+                    width={18}
+                    height={18}
                     className="object-contain mr-0.5"
-                    style={{ width: 22, height: 22 }}
+                    style={{ width: 18, height: 18 }}
                   />
                   <span
-                    className="text-[12px] tracking-wide font-serif font-medium"
-                    style={{ color: `${themeText}66` }}
+                    className="text-[10px] tracking-wide font-serif font-medium"
+                    style={{ color: `${themeText}55` }}
                   >
                     comma,
                   </span>
@@ -348,25 +348,25 @@ export default function CardNews({
                 </h2>
               </div>
 
-              {/* Items */}
-              <div className="flex flex-col gap-2.5">
+              {/* Items — centered vertically */}
+              <div className="flex-1 flex flex-col justify-center gap-2">
                 {(editing ? editNumbered : numbered) ? (
                   currentItems.map((item, idx) => (
-                    <div key={startIdx + idx} className="flex items-start gap-3.5">
+                    <div key={startIdx + idx} className="flex items-start gap-2.5">
                       <span
-                        className="flex-shrink-0 rounded-full flex items-center justify-center text-[11px] font-bold"
+                        className="flex-shrink-0 rounded-full flex items-center justify-center text-[10px] font-bold"
                         style={{
                           backgroundColor: `${themeText}12`,
                           color: `${themeText}aa`,
                           border: `1px solid ${themeText}10`,
-                          minWidth: 26,
-                          height: 26,
+                          minWidth: 22,
+                          height: 22,
                         }}
                       >
                         {globalStartNum + idx}
                       </span>
                       <p
-                        className="text-[15px] leading-relaxed pt-0.5"
+                        className="text-[13px] leading-relaxed pt-0.5"
                         style={{ color: `${themeText}dd` }}
                       >
                         {item}
@@ -375,7 +375,7 @@ export default function CardNews({
                   ))
                 ) : (
                   <div
-                    className="text-[15px] leading-[1.9] whitespace-pre-line"
+                    className="text-[13px] leading-[1.9] whitespace-pre-line"
                     style={{ color: `${themeText}dd` }}
                   >
                     {currentItems.join("\n")}
