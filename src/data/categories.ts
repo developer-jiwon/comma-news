@@ -66,7 +66,7 @@ export const volumes: Volume[] = [
     colorLight: "#E6F4F3",
     cardBg: "#1A3030",
     cardText: "#E0F0EF",
-    // coverImage: "/cover-letter-to-past.png",
+    coverImage: "/cover-letter-to-past.png",
     items: content["letter-to-past"]?.items || [],
     titleSize: content["letter-to-past"]?.titleSize,
     numbered: content["letter-to-past"]?.numbered,
