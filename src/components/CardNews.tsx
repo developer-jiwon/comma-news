@@ -4,7 +4,7 @@ import { useState, useRef, useCallback, useEffect } from "react";
 import Image from "next/image";
 
 
-type CardTheme = "black" | "white" | "navy" | "cream" | "wine" | "sage" | "rust" | "mauve";
+type CardTheme = "black" | "white" | "navy" | "cream" | "rust" | "mauve";
 
 const THEMES: Record<CardTheme, { bg: string; mesh: string; text: string; grid: string; label: string }> = {
   black: {
@@ -35,20 +35,6 @@ const THEMES: Record<CardTheme, { bg: string; mesh: string; text: string; grid: 
     grid: "rgba(0,0,0,0.025)",
     label: "크림",
   },
-  wine: {
-    bg: "#241418",
-    mesh: `linear-gradient(160deg, #2E1A20 0%, #1E1014 100%)`,
-    text: "#E8D0D4",
-    grid: "rgba(255,255,255,0.02)",
-    label: "와인",
-  },
-  sage: {
-    bg: "#1E2820",
-    mesh: `linear-gradient(160deg, #24302A 0%, #1A2218 100%)`,
-    text: "#D0E0D4",
-    grid: "rgba(255,255,255,0.02)",
-    label: "세이지",
-  },
   rust: {
     bg: "#F0E4D8",
     mesh: `linear-gradient(160deg, #F5EAE0 0%, #E8DCD0 100%)`,
@@ -64,6 +50,21 @@ const THEMES: Record<CardTheme, { bg: string; mesh: string; text: string; grid: 
     label: "모브",
   },
 };
+
+const FONT_COLORS: { value: string; label: string }[] = [
+  { value: "", label: "기본" },
+  { value: "#FFFFFF", label: "흰색" },
+  { value: "#EEEEEE", label: "밝은회" },
+  { value: "#1A1A1A", label: "검정" },
+  { value: "#333333", label: "진회" },
+  { value: "#C8D4E8", label: "라이트블루" },
+  { value: "#2C2820", label: "다크브라운" },
+  { value: "#F5E050", label: "레몬" },
+  { value: "#FF9F68", label: "오렌지" },
+  { value: "#FF8FA3", label: "핑크" },
+  { value: "#A0D8B0", label: "민트" },
+  { value: "#88C4F4", label: "스카이" },
+];
 
 const PILL_COLORS: { value: string; label: string; textDark: string }[] = [
   { value: "#F5E050", label: "레몬", textDark: "#333" },
@@ -90,7 +91,15 @@ interface CardNewsProps {
   numbered?: boolean;
   cardTheme?: CardTheme;
   pillColor?: string;
-  onUpdate?: (title: string, items: string[], titleSize?: number, numbered?: boolean, cardTheme?: CardTheme, pillColor?: string, coverTitleSize?: number) => void;
+  fontColor?: string;
+  boldCoverTitle?: boolean;
+  boldCardTitle?: boolean;
+  boldItems?: boolean;
+  onUpdate?: (title: string, items: string[], opts?: {
+    titleSize?: number; coverTitleSize?: number; numbered?: boolean;
+    cardTheme?: CardTheme; pillColor?: string; fontColor?: string;
+    boldCoverTitle?: boolean; boldCardTitle?: boolean; boldItems?: boolean;
+  }) => void;
 }
 
 export default function CardNews({
@@ -107,6 +116,10 @@ export default function CardNews({
   numbered = true,
   cardTheme = "black",
   pillColor = "#F5E050",
+  fontColor = "",
+  boldCoverTitle = false,
+  boldCardTitle = false,
+  boldItems = false,
   onUpdate,
 }: CardNewsProps) {
   const itemCards = Math.ceil(items.length / itemsPerCard);
@@ -121,6 +134,10 @@ export default function CardNews({
   const [editNumbered, setEditNumbered] = useState(numbered);
   const [editTheme, setEditTheme] = useState<CardTheme>(cardTheme);
   const [editPillColor, setEditPillColor] = useState(pillColor);
+  const [editFontColor, setEditFontColor] = useState(fontColor);
+  const [editBoldCoverTitle, setEditBoldCoverTitle] = useState(boldCoverTitle);
+  const [editBoldCardTitle, setEditBoldCardTitle] = useState(boldCardTitle);
+  const [editBoldItems, setEditBoldItems] = useState(boldItems);
   const [isLocal, setIsLocal] = useState(false);
   const [isAuthed, setIsAuthed] = useState(false);
   const [showPwModal, setShowPwModal] = useState(false);
@@ -142,7 +159,7 @@ export default function CardNews({
       setPwInput("");
       setPwError(false);
       // 인증 후 바로 편집 모드 진입
-      setEditTitle(title); setEditItems(items.join("\n")); setEditTitleSize(titleSize || 26); setEditCoverTitleSize(coverTitleSize || 34); setEditNumbered(numbered); setEditTheme(THEMES[cardTheme] ? cardTheme : "black"); setEditPillColor(pillColor); setEditing(true);
+      setEditTitle(title); setEditItems(items.join("\n")); setEditTitleSize(titleSize || 26); setEditCoverTitleSize(coverTitleSize || 34); setEditNumbered(numbered); setEditTheme(THEMES[cardTheme] ? cardTheme : "black"); setEditPillColor(pillColor); setEditFontColor(fontColor); setEditBoldCoverTitle(boldCoverTitle); setEditBoldCardTitle(boldCardTitle); setEditBoldItems(boldItems); setEditing(true);
     } else {
       setPwError(true);
     }
@@ -163,7 +180,11 @@ export default function CardNews({
   }, [totalCards]);
 
   const activeTheme = (editing ? THEMES[editTheme] : THEMES[cardTheme]) || THEMES.black;
-  const themeText = activeTheme.text;
+  const activeFontColor = editing ? editFontColor : fontColor;
+  const themeText = activeFontColor || activeTheme.text;
+  const activeBoldCover = editing ? editBoldCoverTitle : boldCoverTitle;
+  const activeBoldCard = editing ? editBoldCardTitle : boldCardTitle;
+  const activeBoldItems = editing ? editBoldItems : boldItems;
   const activePill = editing ? editPillColor : pillColor;
   const activePillText = PILL_COLORS.find((p) => p.value === activePill)?.textDark || "#333";
   const isCover = currentCard === 0;
@@ -287,7 +308,7 @@ export default function CardNews({
                     <button
                       onClick={() => {
                         if (isAuthed || isLocal) {
-                          setEditTitle(title); setEditItems(items.join("\n")); setEditTitleSize(titleSize || 26); setEditCoverTitleSize(coverTitleSize || 34); setEditNumbered(numbered); setEditTheme(THEMES[cardTheme] ? cardTheme : "black"); setEditPillColor(pillColor); setEditing(true);
+                          setEditTitle(title); setEditItems(items.join("\n")); setEditTitleSize(titleSize || 26); setEditCoverTitleSize(coverTitleSize || 34); setEditNumbered(numbered); setEditTheme(THEMES[cardTheme] ? cardTheme : "black"); setEditPillColor(pillColor); setEditFontColor(fontColor); setEditBoldCoverTitle(boldCoverTitle); setEditBoldCardTitle(boldCardTitle); setEditBoldItems(boldItems); setEditing(true);
                         } else {
                           setShowPwModal(true); setPwInput(""); setPwError(false);
                         }
@@ -313,7 +334,7 @@ export default function CardNews({
               {/* Bottom-left: title + branding */}
               <div>
                 <h2
-                  className="font-light tracking-[0.04em] leading-[1.25] mb-3 whitespace-pre-line"
+                  className={`tracking-[0.04em] leading-[1.25] mb-3 whitespace-pre-line ${activeBoldCover ? "font-bold" : "font-light"}`}
                   style={{ color: "#fff", fontSize: `${editing ? editCoverTitleSize : (coverTitleSize || 34)}px` }}
                 >
                   {title}
@@ -397,7 +418,7 @@ export default function CardNews({
                   </span>
                 </div>
                 <h2
-                  className="font-light tracking-[0.04em] leading-tight whitespace-pre-line"
+                  className={`tracking-[0.04em] leading-tight whitespace-pre-line ${activeBoldCard ? "font-bold" : "font-light"}`}
                   style={{ color: themeText, fontSize: `${editing ? editTitleSize : (titleSize || 26)}px` }}
                 >
                   {title}
@@ -422,7 +443,7 @@ export default function CardNews({
                         {globalStartNum + idx}
                       </span>
                       <p
-                        className="text-[13px] leading-relaxed pt-0.5"
+                        className={`text-[13px] leading-relaxed pt-0.5 ${activeBoldItems ? "font-bold" : ""}`}
                         style={{ color: `${themeText}dd` }}
                       >
                         {item}
@@ -431,7 +452,7 @@ export default function CardNews({
                   ))
                 ) : (
                   <div
-                    className="text-[13px] leading-[1.9] whitespace-pre-line"
+                    className={`text-[13px] leading-[1.9] whitespace-pre-line ${activeBoldItems ? "font-bold" : ""}`}
                     style={{ color: `${themeText}dd` }}
                   >
                     {currentItems.join("\n")}
@@ -605,26 +626,60 @@ export default function CardNews({
               </button>
             ))}
           </div>
-          <div className="flex items-center gap-3 mb-3">
+          <p className="text-[11px] font-mono mb-1" style={{ color: "#999" }}>폰트 컬러</p>
+          <div className="flex flex-wrap gap-1.5 mb-3">
+            {FONT_COLORS.map((fc) => (
+              <button
+                key={fc.value || "default"}
+                onClick={() => setEditFontColor(fc.value)}
+                className="text-[10px] px-2.5 py-1 rounded-full font-medium transition-all flex items-center gap-1"
+                style={{
+                  backgroundColor: editFontColor === fc.value ? (fc.value || activeTheme.text) : "rgba(0,0,0,0.05)",
+                  color: editFontColor === fc.value ? (fc.value ? (["#FFFFFF","#EEEEEE","#F5E050","#A0D8B0","#88C4F4","#FF8FA3","#FF9F68"].includes(fc.value) ? "#333" : "#fff") : "#fff") : "#888",
+                  border: editFontColor === fc.value ? `2px solid ${color}` : "2px solid transparent",
+                }}
+              >
+                <span className="w-2.5 h-2.5 rounded-full inline-block" style={{ backgroundColor: fc.value || activeTheme.text, border: "1px solid rgba(0,0,0,0.15)" }} />
+                {fc.label}
+              </button>
+            ))}
+          </div>
+          <p className="text-[11px] font-mono mb-1" style={{ color: "#999" }}>스타일</p>
+          <div className="flex flex-wrap items-center gap-2 mb-3">
+            <button
+              onClick={() => setEditBoldCoverTitle(!editBoldCoverTitle)}
+              className="text-[10px] px-2.5 py-1 rounded-full font-medium"
+              style={{ backgroundColor: editBoldCoverTitle ? "#333" : "rgba(0,0,0,0.06)", color: editBoldCoverTitle ? "#fff" : "#888" }}
+            >
+              커버제목 B
+            </button>
+            <button
+              onClick={() => setEditBoldCardTitle(!editBoldCardTitle)}
+              className="text-[10px] px-2.5 py-1 rounded-full font-medium"
+              style={{ backgroundColor: editBoldCardTitle ? "#333" : "rgba(0,0,0,0.06)", color: editBoldCardTitle ? "#fff" : "#888" }}
+            >
+              카드제목 B
+            </button>
+            <button
+              onClick={() => setEditBoldItems(!editBoldItems)}
+              className="text-[10px] px-2.5 py-1 rounded-full font-medium"
+              style={{ backgroundColor: editBoldItems ? "#333" : "rgba(0,0,0,0.06)", color: editBoldItems ? "#fff" : "#888" }}
+            >
+              아이템 B
+            </button>
             <button
               onClick={() => setEditNumbered(true)}
-              className="text-[11px] px-3 py-1 rounded-full font-medium"
-              style={{
-                backgroundColor: editNumbered ? "#333" : "rgba(0,0,0,0.06)",
-                color: editNumbered ? "#fff" : "#888",
-              }}
+              className="text-[10px] px-2.5 py-1 rounded-full font-medium"
+              style={{ backgroundColor: editNumbered ? "#333" : "rgba(0,0,0,0.06)", color: editNumbered ? "#fff" : "#888" }}
             >
-              번호 리스트
+              번호
             </button>
             <button
               onClick={() => setEditNumbered(false)}
-              className="text-[11px] px-3 py-1 rounded-full font-medium"
-              style={{
-                backgroundColor: !editNumbered ? "#333" : "rgba(0,0,0,0.06)",
-                color: !editNumbered ? "#fff" : "#888",
-              }}
+              className="text-[10px] px-2.5 py-1 rounded-full font-medium"
+              style={{ backgroundColor: !editNumbered ? "#333" : "rgba(0,0,0,0.06)", color: !editNumbered ? "#fff" : "#888" }}
             >
-              플레인 텍스트
+              플레인
             </button>
           </div>
           <p className="text-[11px] font-mono mb-1" style={{ color: "#999" }}>필 컬러</p>
@@ -657,7 +712,12 @@ export default function CardNews({
             <button
               onClick={() => {
                 const lines = editItems.split("\n").map((l) => l.trim()).filter((l) => l.length > 0);
-                onUpdate(editTitle.trim(), lines, editTitleSize, editNumbered, editTheme, editPillColor, editCoverTitleSize);
+                onUpdate(editTitle.trim(), lines, {
+                  titleSize: editTitleSize, coverTitleSize: editCoverTitleSize,
+                  numbered: editNumbered, cardTheme: editTheme, pillColor: editPillColor,
+                  fontColor: editFontColor, boldCoverTitle: editBoldCoverTitle,
+                  boldCardTitle: editBoldCardTitle, boldItems: editBoldItems,
+                });
                 setEditing(false);
               }}
               className="text-[12px] px-4 py-2 rounded-lg font-medium text-white"

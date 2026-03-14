@@ -12,6 +12,10 @@ export default function CategoryCardWithLocal({ volume }: { volume: Volume }) {
   const [numbered, setNumbered] = useState<boolean>(volume.numbered ?? true);
   const [cardTheme, setCardTheme] = useState<string>(volume.cardTheme || "black");
   const [pillColor, setPillColor] = useState<string>(volume.pillColor || "#F5E050");
+  const [fontColor, setFontColor] = useState<string>((volume as any).fontColor || "");
+  const [boldCoverTitle, setBoldCoverTitle] = useState<boolean>((volume as any).boldCoverTitle || false);
+  const [boldCardTitle, setBoldCardTitle] = useState<boolean>((volume as any).boldCardTitle || false);
+  const [boldItems, setBoldItems] = useState<boolean>((volume as any).boldItems || false);
 
   useEffect(() => {
     // localStorage overrides for live editing (fallback to volume defaults from JSON)
@@ -52,59 +56,36 @@ export default function CategoryCardWithLocal({ volume }: { volume: Volume }) {
     }
   }, [volume.slug]);
 
-  const handleUpdate = useCallback((newTitle: string, newItems: string[], newTitleSize?: number, newNumbered?: boolean, newTheme?: string, newPillColor?: string, newCoverTitleSize?: number) => {
-    // Save to localStorage (for immediate preview)
+  const handleUpdate = useCallback((newTitle: string, newItems: string[], opts?: {
+    titleSize?: number; coverTitleSize?: number; numbered?: boolean;
+    cardTheme?: string; pillColor?: string; fontColor?: string;
+    boldCoverTitle?: boolean; boldCardTitle?: boolean; boldItems?: boolean;
+  }) => {
+    const o = opts || {};
+    // Save to localStorage
     const savedItems = localStorage.getItem("comma-items");
     const savedTitles = localStorage.getItem("comma-titles");
-    const savedSizes = localStorage.getItem("comma-title-sizes");
     const itemsMap: Record<string, string[]> = savedItems ? JSON.parse(savedItems) : {};
     const titlesMap: Record<string, string> = savedTitles ? JSON.parse(savedTitles) : {};
-    const sizesMap: Record<string, number> = savedSizes ? JSON.parse(savedSizes) : {};
-
     itemsMap[volume.slug] = newItems;
     titlesMap[volume.slug] = newTitle;
-    if (newTitleSize) sizesMap[volume.slug] = newTitleSize;
     localStorage.setItem("comma-items", JSON.stringify(itemsMap));
     localStorage.setItem("comma-titles", JSON.stringify(titlesMap));
-    localStorage.setItem("comma-title-sizes", JSON.stringify(sizesMap));
 
-    if (newNumbered !== undefined) {
-      const savedNumbered = localStorage.getItem("comma-numbered");
-      const numberedMap: Record<string, boolean> = savedNumbered ? JSON.parse(savedNumbered) : {};
-      numberedMap[volume.slug] = newNumbered;
-      localStorage.setItem("comma-numbered", JSON.stringify(numberedMap));
-      setNumbered(newNumbered);
-    }
-
-    if (newTheme) {
-      const savedThemes = localStorage.getItem("comma-themes");
-      const themesMap: Record<string, string> = savedThemes ? JSON.parse(savedThemes) : {};
-      themesMap[volume.slug] = newTheme;
-      localStorage.setItem("comma-themes", JSON.stringify(themesMap));
-      setCardTheme(newTheme);
-    }
-
-    if (newPillColor) {
-      const savedPills = localStorage.getItem("comma-pill-colors");
-      const pillsMap: Record<string, string> = savedPills ? JSON.parse(savedPills) : {};
-      pillsMap[volume.slug] = newPillColor;
-      localStorage.setItem("comma-pill-colors", JSON.stringify(pillsMap));
-      setPillColor(newPillColor);
-    }
-
-    if (newCoverTitleSize) {
-      const savedCoverSizes = localStorage.getItem("comma-cover-title-sizes");
-      const coverSizesMap: Record<string, number> = savedCoverSizes ? JSON.parse(savedCoverSizes) : {};
-      coverSizesMap[volume.slug] = newCoverTitleSize;
-      localStorage.setItem("comma-cover-title-sizes", JSON.stringify(coverSizesMap));
-      setCoverTitleSize(newCoverTitleSize);
-    }
+    if (o.titleSize) { setTitleSize(o.titleSize); }
+    if (o.coverTitleSize) { setCoverTitleSize(o.coverTitleSize); }
+    if (o.numbered !== undefined) { setNumbered(o.numbered); }
+    if (o.cardTheme) { setCardTheme(o.cardTheme); }
+    if (o.pillColor) { setPillColor(o.pillColor); }
+    if (o.fontColor !== undefined) { setFontColor(o.fontColor); }
+    if (o.boldCoverTitle !== undefined) { setBoldCoverTitle(o.boldCoverTitle); }
+    if (o.boldCardTitle !== undefined) { setBoldCardTitle(o.boldCardTitle); }
+    if (o.boldItems !== undefined) { setBoldItems(o.boldItems); }
 
     setItems(newItems);
     setTitle(newTitle);
-    if (newTitleSize) setTitleSize(newTitleSize);
 
-    // Sync to file via API (localhost only — writes to volume-content.json)
+    // Sync to file via API
     fetch("/api/sync-data", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -112,14 +93,18 @@ export default function CategoryCardWithLocal({ volume }: { volume: Volume }) {
         slug: volume.slug,
         title: newTitle,
         items: newItems,
-        titleSize: newTitleSize || titleSize,
-        coverTitleSize: newCoverTitleSize || coverTitleSize,
-        numbered: newNumbered ?? numbered,
-        cardTheme: newTheme || cardTheme,
-        pillColor: newPillColor || pillColor,
+        titleSize: o.titleSize || titleSize,
+        coverTitleSize: o.coverTitleSize || coverTitleSize,
+        numbered: o.numbered ?? numbered,
+        cardTheme: o.cardTheme || cardTheme,
+        pillColor: o.pillColor || pillColor,
+        fontColor: o.fontColor ?? fontColor,
+        boldCoverTitle: o.boldCoverTitle ?? boldCoverTitle,
+        boldCardTitle: o.boldCardTitle ?? boldCardTitle,
+        boldItems: o.boldItems ?? boldItems,
       }),
     }).catch(() => {});
-  }, [volume.slug, titleSize, coverTitleSize, numbered, cardTheme, pillColor]);
+  }, [volume.slug, titleSize, coverTitleSize, numbered, cardTheme, pillColor, fontColor, boldCoverTitle, boldCardTitle, boldItems]);
 
   return (
     <CardNews
@@ -134,6 +119,10 @@ export default function CategoryCardWithLocal({ volume }: { volume: Volume }) {
       numbered={numbered}
       cardTheme={cardTheme as any}
       pillColor={pillColor}
+      fontColor={fontColor}
+      boldCoverTitle={boldCoverTitle}
+      boldCardTitle={boldCardTitle}
+      boldItems={boldItems}
       showSave
       onUpdate={handleUpdate}
     />
