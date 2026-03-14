@@ -259,7 +259,7 @@ export default function CardNews({
               {/* Top row: edit button (left) + @handle pill (right) */}
               <div className="flex justify-between items-center">
                 <div>
-                  {onUpdate && isLocal && !editing && (
+                  {onUpdate && !editing && (
                     <button
                       onClick={() => { setEditTitle(title); setEditItems(items.join("\n")); setEditTitleSize(titleSize || 26); setEditNumbered(numbered); setEditTheme(THEMES[cardTheme] ? cardTheme : "black"); setEditPillColor(pillColor); setEditing(true); }}
                       className="text-[10px] px-3 py-1 rounded-full transition-all hover:opacity-80 backdrop-blur-sm"
