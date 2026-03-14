@@ -330,7 +330,7 @@ export default function CardNews({
             <div className="relative flex flex-col h-full px-10 pt-10 pb-10">
               {/* Top row: edit button (left) + @handle pill (right) */}
               <div className="flex justify-between items-center">
-                <div>
+                <div data-html2canvas-ignore>
                   {onUpdate && !editing && (
                     <button
                       onClick={() => {
