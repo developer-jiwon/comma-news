@@ -114,7 +114,6 @@ export default function CardNews({
   onUpdate,
 }: CardNewsProps) {
   const itemCards = Math.ceil(items.length / itemsPerCard);
-  const totalCards = itemCards + 1; // +1 for cover
   const [currentCard, setCurrentCard] = useState(0);
   const cardRef = useRef<HTMLDivElement>(null);
   const [editing, setEditing] = useState(false);
@@ -156,6 +155,25 @@ export default function CardNews({
     }
   };
 
+  const activeTheme = (editing ? THEMES[editTheme] : THEMES[cardTheme]) || THEMES.black;
+  const activeFontColor = editing ? editFontColor : fontColor;
+  const themeText = activeFontColor || activeTheme.text;
+  const activeBoldCover = editing ? editBoldCoverTitle : boldCoverTitle;
+  const activeBoldCard = editing ? editBoldCardTitle : boldCardTitle;
+  const activeBoldItems = editing ? editBoldItems : boldItems;
+  const activePill = editing ? editPillColor : pillColor;
+  const activePillText = PILL_COLORS.find((p) => p.value === activePill)?.textDark || "#333";
+
+  // Live preview values
+  const liveTitle = editing ? editTitle : title;
+  const liveItems = editing ? editItems.split("\n").map((l) => l.trim()).filter((l) => l.length > 0) : items;
+  const liveTitleSize = editing ? editTitleSize : (titleSize || 19);
+  const liveCoverTitleSize = editing ? editCoverTitleSize : (coverTitleSize || 34);
+  const liveNumbered = editing ? editNumbered : numbered;
+
+  const liveItemCards = Math.ceil(liveItems.length / itemsPerCard);
+  const liveTotalCards = liveItemCards + 1;
+
   // Swipe support
   const touchStartX = useRef<number | null>(null);
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
@@ -165,23 +183,14 @@ export default function CardNews({
     if (touchStartX.current === null) return;
     const diff = touchStartX.current - e.changedTouches[0].clientX;
     if (Math.abs(diff) > 50) {
-      setCurrentCard((c) => diff > 0 ? Math.min(totalCards - 1, c + 1) : Math.max(0, c - 1));
+      setCurrentCard((c) => diff > 0 ? Math.min(liveTotalCards - 1, c + 1) : Math.max(0, c - 1));
     }
     touchStartX.current = null;
-  }, [totalCards]);
-
-  const activeTheme = (editing ? THEMES[editTheme] : THEMES[cardTheme]) || THEMES.black;
-  const activeFontColor = editing ? editFontColor : fontColor;
-  const themeText = activeFontColor || activeTheme.text;
-  const activeBoldCover = editing ? editBoldCoverTitle : boldCoverTitle;
-  const activeBoldCard = editing ? editBoldCardTitle : boldCardTitle;
-  const activeBoldItems = editing ? editBoldItems : boldItems;
-  const activePill = editing ? editPillColor : pillColor;
-  const activePillText = PILL_COLORS.find((p) => p.value === activePill)?.textDark || "#333";
+  }, [liveTotalCards]);
   const isCover = currentCard === 0;
   const itemCardIdx = currentCard - 1;
   const startIdx = itemCardIdx * itemsPerCard;
-  const currentItems = isCover ? [] : items.slice(startIdx, startIdx + itemsPerCard);
+  const currentItems = isCover ? [] : liveItems.slice(startIdx, startIdx + itemsPerCard);
   const globalStartNum = startIdx + 1;
 
   const handleSave = useCallback(async () => {
@@ -220,9 +229,9 @@ export default function CardNews({
   }, [title, currentCard]);
 
   return (
-    <div className={`flex gap-5 w-full mx-auto ${editing ? "flex-col items-center max-w-md" : "flex-col items-center max-w-md"}`}>
+    <div className={`flex gap-5 w-full mx-auto ${editing ? "flex-col md:flex-row md:items-start md:max-w-4xl items-center max-w-md" : "flex-col items-center max-w-md"}`}>
       {/* Card column */}
-      <div className={`flex flex-col items-center gap-3 w-full`}>
+      <div className={`flex flex-col items-center gap-3 ${editing ? "w-full md:w-[380px] md:flex-shrink-0 md:sticky md:top-6" : "w-full"}`}>
 
       {/* Save button — top center, above card */}
       {showSave && (
@@ -326,9 +335,9 @@ export default function CardNews({
               <div>
                 <h2
                   className={`tracking-[0.04em] leading-[1.25] mb-3 whitespace-pre-line ${activeBoldCover ? "font-bold" : "font-light"}`}
-                  style={{ color: "#fff", fontSize: `${editing ? editCoverTitleSize : (coverTitleSize || 34)}px` }}
+                  style={{ color: "#fff", fontSize: `${liveCoverTitleSize}px` }}
                 >
-                  {title}
+                  {liveTitle}
                 </h2>
                 <div className="flex items-center">
                   <Image
@@ -410,15 +419,15 @@ export default function CardNews({
                 </div>
                 <h2
                   className={`tracking-[0.04em] leading-tight whitespace-pre-line ${activeBoldCard ? "font-bold" : "font-light"}`}
-                  style={{ color: themeText, fontSize: `${editing ? editTitleSize : (titleSize || 19)}px` }}
+                  style={{ color: themeText, fontSize: `${liveTitleSize}px` }}
                 >
-                  {title}
+                  {liveTitle}
                 </h2>
               </div>
 
               {/* Items — centered vertically */}
               <div className="flex-1 flex flex-col justify-center gap-2">
-                {(editing ? editNumbered : numbered) ? (
+                {liveNumbered ? (
                   currentItems.map((item, idx) => (
                     <div key={startIdx + idx} className="flex items-start gap-2.5">
                       <span
@@ -466,7 +475,7 @@ export default function CardNews({
                   className="text-[10px] font-mono"
                   style={{ color: `${themeText}40` }}
                 >
-                  {currentCard} / {totalCards - 1}
+                  {currentCard} / {liveTotalCards - 1}
                 </span>
               </div>
             </div>
@@ -490,7 +499,7 @@ export default function CardNews({
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
         </button>
         <div className="flex items-center gap-1.5">
-          {Array.from({ length: totalCards }, (_, i) => (
+          {Array.from({ length: liveTotalCards }, (_, i) => (
             <button
               key={i}
               onClick={() => setCurrentCard(i)}
@@ -506,13 +515,13 @@ export default function CardNews({
           ))}
         </div>
         <button
-          onClick={() => setCurrentCard((c) => Math.min(totalCards - 1, c + 1))}
-          disabled={currentCard === totalCards - 1}
+          onClick={() => setCurrentCard((c) => Math.min(liveTotalCards - 1, c + 1))}
+          disabled={currentCard === liveTotalCards - 1}
           className="w-8 h-8 flex items-center justify-center rounded-full transition-all"
           style={{
-            backgroundColor: currentCard === totalCards - 1 ? "transparent" : "rgba(0,0,0,0.06)",
-            color: currentCard === totalCards - 1 ? "rgba(0,0,0,0.15)" : "#666",
-            cursor: currentCard === totalCards - 1 ? "default" : "pointer",
+            backgroundColor: currentCard === liveTotalCards - 1 ? "transparent" : "rgba(0,0,0,0.06)",
+            color: currentCard === liveTotalCards - 1 ? "rgba(0,0,0,0.15)" : "#666",
+            cursor: currentCard === liveTotalCards - 1 ? "default" : "pointer",
           }}
         >
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
@@ -574,7 +583,7 @@ export default function CardNews({
 
       {/* Inline editor */}
       {editing && onUpdate && (
-        <div className="w-full rounded-xl p-4" style={{ backgroundColor: "rgba(0,0,0,0.03)" }}>
+        <div className="w-full md:flex-1 md:min-w-0 rounded-xl p-4 md:sticky md:top-6" style={{ backgroundColor: "rgba(0,0,0,0.03)" }}>
           <p className="text-[9px] font-mono mb-0.5" style={{ color: "#999" }}>제목 (줄바꿈 가능)</p>
           <textarea
             value={editTitle}
