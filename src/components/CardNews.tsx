@@ -544,7 +544,7 @@ export default function CardNews({
               value={pwInput}
               onChange={(e) => { setPwInput(e.target.value); setPwError(false); }}
               placeholder="비밀번호"
-              className="w-full rounded-lg border px-3 py-2.5 text-[13px] mb-2"
+              className="w-full rounded-lg border px-3 py-2.5 text-[16px] mb-2"
               style={{ borderColor: pwError ? "#e55" : "rgba(0,0,0,0.12)", color: "#333" }}
               autoFocus
               onKeyDown={(e) => { if (e.key === "Enter") handlePwSubmit(); }}
@@ -579,8 +579,8 @@ export default function CardNews({
           <textarea
             value={editTitle}
             onChange={(e) => setEditTitle(e.target.value)}
-            className="w-full rounded-md border px-2.5 py-1.5 text-[10px] font-medium mb-2 resize-none"
-            style={{ borderColor: "rgba(0,0,0,0.1)", color: "#333", minHeight: 48 }}
+            className="w-full rounded-md border px-2.5 py-1.5 text-[16px] font-medium mb-2 resize-none"
+            style={{ borderColor: "rgba(0,0,0,0.1)", color: "#333", minHeight: 48, fontSize: 16 }}
           />
           <p className="text-[9px] font-mono mb-0.5" style={{ color: "#999" }}>커버 제목 크기: {editCoverTitleSize}px</p>
           <input
@@ -695,8 +695,8 @@ export default function CardNews({
           <textarea
             value={editItems}
             onChange={(e) => setEditItems(e.target.value)}
-            className="w-full rounded-md border p-2.5 text-[11px] leading-relaxed resize-none"
-            style={{ borderColor: "rgba(0,0,0,0.1)", color: "#333", minHeight: 170 }}
+            className="w-full rounded-md border p-2.5 text-[16px] leading-relaxed resize-none"
+            style={{ borderColor: "rgba(0,0,0,0.1)", color: "#333", minHeight: 170, fontSize: 16 }}
             placeholder="아이템을 한 줄에 하나씩 입력하세요..."
           />
           <div className="flex gap-1.5 mt-1.5">
