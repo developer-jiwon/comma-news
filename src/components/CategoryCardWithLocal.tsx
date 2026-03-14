@@ -24,7 +24,10 @@ export default function CategoryCardWithLocal({ volume }: { volume: Volume }) {
     const savedSizes = localStorage.getItem("comma-title-sizes");
     if (savedItems) {
       const itemsMap: Record<string, string[]> = JSON.parse(savedItems);
-      if (itemsMap[volume.slug]?.length) setItems(itemsMap[volume.slug]);
+      // localStorage 아이템이 서버 데이터보다 많을 때만 사용 (오래된 빈 데이터 방지)
+      if (itemsMap[volume.slug]?.length && itemsMap[volume.slug].length >= volume.items.length) {
+        setItems(itemsMap[volume.slug]);
+      }
     }
     if (savedTitles) {
       const titlesMap: Record<string, string> = JSON.parse(savedTitles);
