@@ -280,6 +280,7 @@ export default function CardNews({
             height: DESIGN_WIDTH * 1.25,
             transform: `scale(${cardScale})`,
             transformOrigin: "top left",
+            willChange: "transform",
           }}
         >
         {isCover ? (
@@ -348,8 +349,8 @@ export default function CardNews({
                   )}
                 </div>
                 <span
-                  className="text-[9px] tracking-wide font-medium px-2 py-0.5 rounded-full"
-                  style={{ backgroundColor: activePill, color: activePillText }}
+                  className="tracking-wide font-medium px-2 py-0.5 rounded-full whitespace-nowrap"
+                  style={{ backgroundColor: `${activePill}aa`, color: activePillText, fontSize: 9, lineHeight: "16px" }}
                 >
                   @jiwonnnnieee
                 </span>
@@ -366,24 +367,24 @@ export default function CardNews({
                 >
                   {liveTitle}
                 </h2>
-                <div className="flex items-center">
+                <div className="flex items-center gap-[6px]">
                   <Image
                     src="/comma-icon-light.png"
                     alt=""
                     width={16}
                     height={16}
-                    className="object-contain mr-0.5"
-                    style={{ width: 16, height: 16 }}
+                    className="object-contain"
+                    style={{ width: 16, height: 16, flexShrink: 0 }}
                   />
                   <span
-                    className="text-[10px] tracking-wide font-serif font-medium"
-                    style={{ color: "rgba(255,255,255,0.4)" }}
+                    className="tracking-wide font-serif font-medium whitespace-nowrap"
+                    style={{ color: "rgba(255,255,255,0.4)", fontSize: 10, lineHeight: "16px" }}
                   >
                     comma,
                   </span>
                   <span
-                    className="text-[10px] ml-2 font-light tracking-[0.04em]"
-                    style={{ color: "rgba(255,255,255,0.3)" }}
+                    className="font-light whitespace-nowrap"
+                    style={{ color: "rgba(255,255,255,0.3)", fontSize: 10, lineHeight: "16px", letterSpacing: "0.04em" }}
                   >
                     100가지 이유를 찾아가는 여정
                   </span>
