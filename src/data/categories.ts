@@ -11,6 +11,7 @@ export interface Volume {
   coverImage?: string; // optional cover photo URL
   items: string[];
   titleSize?: number;
+  coverTitleSize?: number;
   numbered?: boolean;
   cardTheme?: string;
   pillColor?: string;
@@ -20,6 +21,7 @@ type ContentMap = Record<string, {
   title?: string;
   items?: string[];
   titleSize?: number;
+  coverTitleSize?: number;
   numbered?: boolean;
   cardTheme?: string;
   pillColor?: string;

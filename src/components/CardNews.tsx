@@ -86,10 +86,11 @@ interface CardNewsProps {
   itemsPerCard?: number;
   showSave?: boolean;
   titleSize?: number;
+  coverTitleSize?: number;
   numbered?: boolean;
   cardTheme?: CardTheme;
   pillColor?: string;
-  onUpdate?: (title: string, items: string[], titleSize?: number, numbered?: boolean, cardTheme?: CardTheme, pillColor?: string) => void;
+  onUpdate?: (title: string, items: string[], titleSize?: number, numbered?: boolean, cardTheme?: CardTheme, pillColor?: string, coverTitleSize?: number) => void;
 }
 
 export default function CardNews({
@@ -102,6 +103,7 @@ export default function CardNews({
   itemsPerCard = 7,
   showSave = false,
   titleSize,
+  coverTitleSize,
   numbered = true,
   cardTheme = "black",
   pillColor = "#F5E050",
@@ -115,6 +117,7 @@ export default function CardNews({
   const [editTitle, setEditTitle] = useState(title);
   const [editItems, setEditItems] = useState(items.join("\n"));
   const [editTitleSize, setEditTitleSize] = useState(titleSize || 26);
+  const [editCoverTitleSize, setEditCoverTitleSize] = useState(coverTitleSize || 34);
   const [editNumbered, setEditNumbered] = useState(numbered);
   const [editTheme, setEditTheme] = useState<CardTheme>(cardTheme);
   const [editPillColor, setEditPillColor] = useState(pillColor);
@@ -139,7 +142,7 @@ export default function CardNews({
       setPwInput("");
       setPwError(false);
       // 인증 후 바로 편집 모드 진입
-      setEditTitle(title); setEditItems(items.join("\n")); setEditTitleSize(titleSize || 26); setEditNumbered(numbered); setEditTheme(THEMES[cardTheme] ? cardTheme : "black"); setEditPillColor(pillColor); setEditing(true);
+      setEditTitle(title); setEditItems(items.join("\n")); setEditTitleSize(titleSize || 26); setEditCoverTitleSize(coverTitleSize || 34); setEditNumbered(numbered); setEditTheme(THEMES[cardTheme] ? cardTheme : "black"); setEditPillColor(pillColor); setEditing(true);
     } else {
       setPwError(true);
     }
@@ -205,9 +208,9 @@ export default function CardNews({
   }, [title, currentCard]);
 
   return (
-    <div className={`flex gap-5 w-full mx-auto ${editing ? "flex-row items-start max-w-4xl" : "flex-col items-center max-w-md"}`}>
+    <div className={`flex gap-5 w-full mx-auto ${editing ? "flex-col items-center max-w-md" : "flex-col items-center max-w-md"}`}>
       {/* Card column */}
-      <div className={`flex flex-col items-center gap-3 ${editing ? "w-[380px] flex-shrink-0 sticky top-6" : "w-full"}`}>
+      <div className={`flex flex-col items-center gap-3 w-full`}>
 
       {/* Save button — top center, above card */}
       {showSave && (
@@ -284,7 +287,7 @@ export default function CardNews({
                     <button
                       onClick={() => {
                         if (isAuthed || isLocal) {
-                          setEditTitle(title); setEditItems(items.join("\n")); setEditTitleSize(titleSize || 26); setEditNumbered(numbered); setEditTheme(THEMES[cardTheme] ? cardTheme : "black"); setEditPillColor(pillColor); setEditing(true);
+                          setEditTitle(title); setEditItems(items.join("\n")); setEditTitleSize(titleSize || 26); setEditCoverTitleSize(coverTitleSize || 34); setEditNumbered(numbered); setEditTheme(THEMES[cardTheme] ? cardTheme : "black"); setEditPillColor(pillColor); setEditing(true);
                         } else {
                           setShowPwModal(true); setPwInput(""); setPwError(false);
                         }
@@ -311,7 +314,7 @@ export default function CardNews({
               <div>
                 <h2
                   className="font-light tracking-[0.04em] leading-[1.25] mb-3 whitespace-pre-line"
-                  style={{ color: "#fff", fontSize: `${(editing ? editTitleSize : (titleSize || 26)) + 8}px` }}
+                  style={{ color: "#fff", fontSize: `${editing ? editCoverTitleSize : (coverTitleSize || 34)}px` }}
                 >
                   {title}
                 </h2>
@@ -559,7 +562,7 @@ export default function CardNews({
 
       {/* Inline editor */}
       {editing && onUpdate && (
-        <div className="flex-1 min-w-0 rounded-2xl p-5 sticky top-6" style={{ backgroundColor: "rgba(0,0,0,0.03)" }}>
+        <div className="w-full rounded-2xl p-5" style={{ backgroundColor: "rgba(0,0,0,0.03)" }}>
           <p className="text-[11px] font-mono mb-1" style={{ color: "#999" }}>제목 (줄바꿈 가능)</p>
           <textarea
             value={editTitle}
@@ -567,7 +570,16 @@ export default function CardNews({
             className="w-full rounded-lg border px-3 py-2 text-[12px] font-medium mb-3 resize-none"
             style={{ borderColor: "rgba(0,0,0,0.1)", color: "#333", minHeight: 60 }}
           />
-          <p className="text-[11px] font-mono mb-1" style={{ color: "#999" }}>제목 폰트 크기: {editTitleSize}px</p>
+          <p className="text-[11px] font-mono mb-1" style={{ color: "#999" }}>커버 제목 크기: {editCoverTitleSize}px</p>
+          <input
+            type="range"
+            min={20}
+            max={44}
+            value={editCoverTitleSize}
+            onChange={(e) => setEditCoverTitleSize(Number(e.target.value))}
+            className="w-full mb-3"
+          />
+          <p className="text-[11px] font-mono mb-1" style={{ color: "#999" }}>카드 제목 크기: {editTitleSize}px</p>
           <input
             type="range"
             min={14}
@@ -645,7 +657,7 @@ export default function CardNews({
             <button
               onClick={() => {
                 const lines = editItems.split("\n").map((l) => l.trim()).filter((l) => l.length > 0);
-                onUpdate(editTitle.trim(), lines, editTitleSize, editNumbered, editTheme, editPillColor);
+                onUpdate(editTitle.trim(), lines, editTitleSize, editNumbered, editTheme, editPillColor, editCoverTitleSize);
                 setEditing(false);
               }}
               className="text-[12px] px-4 py-2 rounded-lg font-medium text-white"

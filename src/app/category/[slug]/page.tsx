@@ -23,7 +23,7 @@ export default async function CategoryPage({
   return (
     <div className="min-h-screen bg-tile bg-tile-diamond relative">
       <div className="relative z-10">
-        <div className="max-w-5xl mx-auto min-h-screen">
+        <div className="max-w-md mx-auto min-h-screen">
           {/* Header — 메인과 동일 */}
           <header className="px-8 pt-10 pb-6">
             <nav className="flex items-center mb-8">

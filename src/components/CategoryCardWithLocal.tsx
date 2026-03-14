@@ -8,6 +8,7 @@ export default function CategoryCardWithLocal({ volume }: { volume: Volume }) {
   const [items, setItems] = useState<string[]>(volume.items);
   const [title, setTitle] = useState<string>(volume.title);
   const [titleSize, setTitleSize] = useState<number>(volume.titleSize || 26);
+  const [coverTitleSize, setCoverTitleSize] = useState<number>((volume as any).coverTitleSize || 34);
   const [numbered, setNumbered] = useState<boolean>(volume.numbered ?? true);
   const [cardTheme, setCardTheme] = useState<string>(volume.cardTheme || "black");
   const [pillColor, setPillColor] = useState<string>(volume.pillColor || "#F5E050");
@@ -29,6 +30,11 @@ export default function CategoryCardWithLocal({ volume }: { volume: Volume }) {
       const sizesMap: Record<string, number> = JSON.parse(savedSizes);
       if (sizesMap[volume.slug]) setTitleSize(sizesMap[volume.slug]);
     }
+    const savedCoverSizes = localStorage.getItem("comma-cover-title-sizes");
+    if (savedCoverSizes) {
+      const coverSizesMap: Record<string, number> = JSON.parse(savedCoverSizes);
+      if (coverSizesMap[volume.slug]) setCoverTitleSize(coverSizesMap[volume.slug]);
+    }
     const savedNumbered = localStorage.getItem("comma-numbered");
     if (savedNumbered) {
       const numberedMap: Record<string, boolean> = JSON.parse(savedNumbered);
@@ -46,7 +52,7 @@ export default function CategoryCardWithLocal({ volume }: { volume: Volume }) {
     }
   }, [volume.slug]);
 
-  const handleUpdate = useCallback((newTitle: string, newItems: string[], newTitleSize?: number, newNumbered?: boolean, newTheme?: string, newPillColor?: string) => {
+  const handleUpdate = useCallback((newTitle: string, newItems: string[], newTitleSize?: number, newNumbered?: boolean, newTheme?: string, newPillColor?: string, newCoverTitleSize?: number) => {
     // Save to localStorage (for immediate preview)
     const savedItems = localStorage.getItem("comma-items");
     const savedTitles = localStorage.getItem("comma-titles");
@@ -86,6 +92,14 @@ export default function CategoryCardWithLocal({ volume }: { volume: Volume }) {
       setPillColor(newPillColor);
     }
 
+    if (newCoverTitleSize) {
+      const savedCoverSizes = localStorage.getItem("comma-cover-title-sizes");
+      const coverSizesMap: Record<string, number> = savedCoverSizes ? JSON.parse(savedCoverSizes) : {};
+      coverSizesMap[volume.slug] = newCoverTitleSize;
+      localStorage.setItem("comma-cover-title-sizes", JSON.stringify(coverSizesMap));
+      setCoverTitleSize(newCoverTitleSize);
+    }
+
     setItems(newItems);
     setTitle(newTitle);
     if (newTitleSize) setTitleSize(newTitleSize);
@@ -99,12 +113,13 @@ export default function CategoryCardWithLocal({ volume }: { volume: Volume }) {
         title: newTitle,
         items: newItems,
         titleSize: newTitleSize || titleSize,
+        coverTitleSize: newCoverTitleSize || coverTitleSize,
         numbered: newNumbered ?? numbered,
         cardTheme: newTheme || cardTheme,
         pillColor: newPillColor || pillColor,
       }),
     }).catch(() => {});
-  }, [volume.slug, titleSize, numbered, cardTheme, pillColor]);
+  }, [volume.slug, titleSize, coverTitleSize, numbered, cardTheme, pillColor]);
 
   return (
     <CardNews
@@ -115,6 +130,7 @@ export default function CategoryCardWithLocal({ volume }: { volume: Volume }) {
       cardText={volume.cardText}
       coverImage={volume.coverImage}
       titleSize={titleSize}
+      coverTitleSize={coverTitleSize}
       numbered={numbered}
       cardTheme={cardTheme as any}
       pillColor={pillColor}
