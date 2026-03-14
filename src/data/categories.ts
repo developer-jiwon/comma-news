@@ -78,7 +78,7 @@ export const volumes: Volume[] = [
   {
     slug: "best-office-life",
     vol: "04",
-    title: content["best-office-life"]?.title || "직장인으로써 할 수 있는 최선의 삶",
+    title: content["best-office-life"]?.title || "직장인으로서 할 수 있는 최선의 삶",
     color: "#7B93B8",
     colorLight: "#ECF0F7",
     cardBg: "#1B2538",
