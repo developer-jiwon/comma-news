@@ -116,6 +116,21 @@ export default function CardNews({
   const itemCards = Math.ceil(items.length / itemsPerCard);
   const [currentCard, setCurrentCard] = useState(0);
   const cardRef = useRef<HTMLDivElement>(null);
+  const cardInnerRef = useRef<HTMLDivElement>(null);
+  const [cardScale, setCardScale] = useState(1);
+  const DESIGN_WIDTH = 380;
+
+  useEffect(() => {
+    const updateScale = () => {
+      if (cardRef.current) {
+        const w = cardRef.current.offsetWidth;
+        setCardScale(Math.min(w / DESIGN_WIDTH, 1));
+      }
+    };
+    updateScale();
+    window.addEventListener("resize", updateScale);
+    return () => window.removeEventListener("resize", updateScale);
+  }, []);
   const [editing, setEditing] = useState(false);
   const [editTitle, setEditTitle] = useState(title);
   const [editItems, setEditItems] = useState(items.join("\n"));
@@ -249,12 +264,24 @@ export default function CardNews({
         ref={cardRef}
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
-        className="relative w-full rounded-3xl overflow-hidden"
+        className="relative rounded-3xl overflow-hidden"
         style={{
+          width: "100%",
           aspectRatio: "4 / 5",
           boxShadow: `0 20px 50px rgba(0,0,0,0.3), 0 8px 20px rgba(0,0,0,0.2)`,
         }}
       >
+        {/* Scaled inner container — designed at 380px, scales to fit */}
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            width: DESIGN_WIDTH,
+            height: DESIGN_WIDTH * 1.25,
+            transform: `scale(${cardScale})`,
+            transformOrigin: "top left",
+          }}
+        >
         {isCover ? (
           /* ===== COVER CARD ===== */
           <>
@@ -482,6 +509,7 @@ export default function CardNews({
           </>
         )}
 
+        </div>{/* end scaled inner */}
       </div>
 
       {/* Pagination — dots + arrows */}
