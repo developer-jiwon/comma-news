@@ -124,6 +124,20 @@ export default function CardNews({
     setIsLocal(window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1");
   }, []);
 
+  // Swipe support
+  const touchStartX = useRef<number | null>(null);
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  }, []);
+  const handleTouchEnd = useCallback((e: React.TouchEvent) => {
+    if (touchStartX.current === null) return;
+    const diff = touchStartX.current - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) {
+      setCurrentCard((c) => diff > 0 ? Math.min(totalCards - 1, c + 1) : Math.max(0, c - 1));
+    }
+    touchStartX.current = null;
+  }, [totalCards]);
+
   const activeTheme = (editing ? THEMES[editTheme] : THEMES[cardTheme]) || THEMES.black;
   const themeText = activeTheme.text;
   const activePill = editing ? editPillColor : pillColor;
@@ -188,6 +202,8 @@ export default function CardNews({
       {/* Card — 4:5 aspect ratio for Instagram/Threads */}
       <div
         ref={cardRef}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
         className="relative w-full rounded-3xl overflow-hidden"
         style={{
           aspectRatio: "4 / 5",
@@ -417,19 +433,48 @@ export default function CardNews({
 
       </div>
 
-      {/* Slider — minimal transparent */}
-      <div className="w-full px-4">
-        <input
-          type="range"
-          min={0}
-          max={totalCards - 1}
-          value={currentCard}
-          onChange={(e) => setCurrentCard(Number(e.target.value))}
-          className="card-slider w-full h-[3px] rounded-full appearance-none cursor-pointer"
+      {/* Pagination — dots + arrows */}
+      <div className="w-full flex items-center justify-center gap-3 py-2">
+        <button
+          onClick={() => setCurrentCard((c) => Math.max(0, c - 1))}
+          disabled={currentCard === 0}
+          className="w-8 h-8 flex items-center justify-center rounded-full transition-all"
           style={{
-            background: `linear-gradient(to right, ${color}88 0%, ${color}88 ${(currentCard / Math.max(totalCards - 1, 1)) * 100}%, rgba(0,0,0,0.06) ${(currentCard / Math.max(totalCards - 1, 1)) * 100}%, rgba(0,0,0,0.06) 100%)`,
+            backgroundColor: currentCard === 0 ? "transparent" : "rgba(0,0,0,0.06)",
+            color: currentCard === 0 ? "rgba(0,0,0,0.15)" : "#666",
+            cursor: currentCard === 0 ? "default" : "pointer",
           }}
-        />
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <div className="flex items-center gap-1.5">
+          {Array.from({ length: totalCards }, (_, i) => (
+            <button
+              key={i}
+              onClick={() => setCurrentCard(i)}
+              className="rounded-full transition-all"
+              style={{
+                width: currentCard === i ? 18 : 7,
+                height: 7,
+                backgroundColor: currentCard === i ? color : "rgba(0,0,0,0.12)",
+                borderRadius: 999,
+                cursor: "pointer",
+              }}
+            />
+          ))}
+        </div>
+        <button
+          onClick={() => setCurrentCard((c) => Math.min(totalCards - 1, c + 1))}
+          disabled={currentCard === totalCards - 1}
+          className="w-8 h-8 flex items-center justify-center rounded-full transition-all"
+          style={{
+            backgroundColor: currentCard === totalCards - 1 ? "transparent" : "rgba(0,0,0,0.06)",
+            color: currentCard === totalCards - 1 ? "rgba(0,0,0,0.15)" : "#666",
+            cursor: currentCard === totalCards - 1 ? "default" : "pointer",
+          }}
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
       </div>
 
       {/* no action buttons below card */}
