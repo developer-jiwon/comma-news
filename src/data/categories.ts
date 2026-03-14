@@ -51,7 +51,7 @@ export const volumes: Volume[] = [
     colorLight: "#EEF1F7",
     cardBg: "#1C2440",
     cardText: "#E5EAF3",
-    // coverImage: "/cover-before-quitting.png",
+    coverImage: "/cover-before-quitting.png",
     items: content["before-quitting"]?.items || [],
     titleSize: content["before-quitting"]?.titleSize,
     numbered: content["before-quitting"]?.numbered,
