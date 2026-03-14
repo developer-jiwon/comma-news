@@ -574,39 +574,39 @@ export default function CardNews({
 
       {/* Inline editor */}
       {editing && onUpdate && (
-        <div className="w-full rounded-2xl p-5" style={{ backgroundColor: "rgba(0,0,0,0.03)" }}>
-          <p className="text-[11px] font-mono mb-1" style={{ color: "#999" }}>제목 (줄바꿈 가능)</p>
+        <div className="w-full rounded-xl p-4" style={{ backgroundColor: "rgba(0,0,0,0.03)" }}>
+          <p className="text-[9px] font-mono mb-0.5" style={{ color: "#999" }}>제목 (줄바꿈 가능)</p>
           <textarea
             value={editTitle}
             onChange={(e) => setEditTitle(e.target.value)}
-            className="w-full rounded-lg border px-3 py-2 text-[12px] font-medium mb-3 resize-none"
-            style={{ borderColor: "rgba(0,0,0,0.1)", color: "#333", minHeight: 60 }}
+            className="w-full rounded-md border px-2.5 py-1.5 text-[10px] font-medium mb-2 resize-none"
+            style={{ borderColor: "rgba(0,0,0,0.1)", color: "#333", minHeight: 48 }}
           />
-          <p className="text-[11px] font-mono mb-1" style={{ color: "#999" }}>커버 제목 크기: {editCoverTitleSize}px</p>
+          <p className="text-[9px] font-mono mb-0.5" style={{ color: "#999" }}>커버 제목 크기: {editCoverTitleSize}px</p>
           <input
             type="range"
             min={20}
             max={44}
             value={editCoverTitleSize}
             onChange={(e) => setEditCoverTitleSize(Number(e.target.value))}
-            className="w-full mb-3"
+            className="w-full mb-2"
           />
-          <p className="text-[11px] font-mono mb-1" style={{ color: "#999" }}>카드 제목 크기: {editTitleSize}px</p>
+          <p className="text-[9px] font-mono mb-0.5" style={{ color: "#999" }}>카드 제목 크기: {editTitleSize}px</p>
           <input
             type="range"
             min={14}
             max={32}
             value={editTitleSize}
             onChange={(e) => setEditTitleSize(Number(e.target.value))}
-            className="w-full mb-3"
+            className="w-full mb-2"
           />
-          <p className="text-[11px] font-mono mb-1" style={{ color: "#999" }}>카드 테마</p>
-          <div className="flex flex-wrap gap-1.5 mb-3">
+          <p className="text-[9px] font-mono mb-0.5" style={{ color: "#999" }}>카드 테마</p>
+          <div className="flex flex-wrap gap-1 mb-2">
             {(Object.keys(THEMES) as CardTheme[]).map((t) => (
               <button
                 key={t}
                 onClick={() => setEditTheme(t)}
-                className="text-[10px] px-2.5 py-1 rounded-full font-medium transition-all"
+                className="text-[8px] px-2 py-0.5 rounded-full font-medium transition-all"
                 style={{
                   backgroundColor: editTheme === t ? THEMES[t].bg : "rgba(0,0,0,0.05)",
                   color: editTheme === t ? THEMES[t].text : "#888",
@@ -617,89 +617,89 @@ export default function CardNews({
               </button>
             ))}
           </div>
-          <p className="text-[11px] font-mono mb-1" style={{ color: "#999" }}>폰트 컬러</p>
-          <div className="flex flex-wrap gap-1.5 mb-3">
+          <p className="text-[9px] font-mono mb-0.5" style={{ color: "#999" }}>폰트 컬러</p>
+          <div className="flex flex-wrap gap-1 mb-2">
             {FONT_COLORS.map((fc) => (
               <button
                 key={fc.value || "default"}
                 onClick={() => setEditFontColor(fc.value)}
-                className="text-[10px] px-2.5 py-1 rounded-full font-medium transition-all flex items-center gap-1"
+                className="text-[8px] px-2 py-0.5 rounded-full font-medium transition-all flex items-center gap-0.5"
                 style={{
                   backgroundColor: editFontColor === fc.value ? (fc.value || activeTheme.text) : "rgba(0,0,0,0.05)",
                   color: editFontColor === fc.value ? (fc.value === "#FFFFFF" || !fc.value ? "#333" : "#fff") : "#888",
                   border: editFontColor === fc.value ? `2px solid ${color}` : "2px solid transparent",
                 }}
               >
-                <span className="w-2.5 h-2.5 rounded-full inline-block" style={{ backgroundColor: fc.value || activeTheme.text, border: "1px solid rgba(0,0,0,0.15)" }} />
+                <span className="w-2 h-2 rounded-full inline-block" style={{ backgroundColor: fc.value || activeTheme.text, border: "1px solid rgba(0,0,0,0.15)" }} />
                 {fc.label}
               </button>
             ))}
           </div>
-          <p className="text-[11px] font-mono mb-1" style={{ color: "#999" }}>스타일</p>
-          <div className="flex flex-wrap items-center gap-2 mb-3">
+          <p className="text-[9px] font-mono mb-0.5" style={{ color: "#999" }}>스타일</p>
+          <div className="flex flex-wrap items-center gap-1.5 mb-2">
             <button
               onClick={() => setEditBoldCoverTitle(!editBoldCoverTitle)}
-              className="text-[10px] px-2.5 py-1 rounded-full font-medium"
+              className="text-[8px] px-2 py-0.5 rounded-full font-medium"
               style={{ backgroundColor: editBoldCoverTitle ? "#333" : "rgba(0,0,0,0.06)", color: editBoldCoverTitle ? "#fff" : "#888" }}
             >
               커버제목 B
             </button>
             <button
               onClick={() => setEditBoldCardTitle(!editBoldCardTitle)}
-              className="text-[10px] px-2.5 py-1 rounded-full font-medium"
+              className="text-[8px] px-2 py-0.5 rounded-full font-medium"
               style={{ backgroundColor: editBoldCardTitle ? "#333" : "rgba(0,0,0,0.06)", color: editBoldCardTitle ? "#fff" : "#888" }}
             >
               카드제목 B
             </button>
             <button
               onClick={() => setEditBoldItems(!editBoldItems)}
-              className="text-[10px] px-2.5 py-1 rounded-full font-medium"
+              className="text-[8px] px-2 py-0.5 rounded-full font-medium"
               style={{ backgroundColor: editBoldItems ? "#333" : "rgba(0,0,0,0.06)", color: editBoldItems ? "#fff" : "#888" }}
             >
               아이템 B
             </button>
             <button
               onClick={() => setEditNumbered(true)}
-              className="text-[10px] px-2.5 py-1 rounded-full font-medium"
+              className="text-[8px] px-2 py-0.5 rounded-full font-medium"
               style={{ backgroundColor: editNumbered ? "#333" : "rgba(0,0,0,0.06)", color: editNumbered ? "#fff" : "#888" }}
             >
               번호
             </button>
             <button
               onClick={() => setEditNumbered(false)}
-              className="text-[10px] px-2.5 py-1 rounded-full font-medium"
+              className="text-[8px] px-2 py-0.5 rounded-full font-medium"
               style={{ backgroundColor: !editNumbered ? "#333" : "rgba(0,0,0,0.06)", color: !editNumbered ? "#fff" : "#888" }}
             >
               플레인
             </button>
           </div>
-          <p className="text-[11px] font-mono mb-1" style={{ color: "#999" }}>필 컬러</p>
-          <div className="flex flex-wrap gap-1.5 mb-3">
+          <p className="text-[9px] font-mono mb-0.5" style={{ color: "#999" }}>필 컬러</p>
+          <div className="flex flex-wrap gap-1 mb-2">
             {PILL_COLORS.map((p) => (
               <button
                 key={p.value}
                 onClick={() => setEditPillColor(p.value)}
-                className="text-[10px] px-2.5 py-1 rounded-full font-medium transition-all flex items-center gap-1"
+                className="text-[8px] px-2 py-0.5 rounded-full font-medium transition-all flex items-center gap-0.5"
                 style={{
                   backgroundColor: editPillColor === p.value ? p.value : "rgba(0,0,0,0.05)",
                   color: editPillColor === p.value ? p.textDark : "#888",
                   border: editPillColor === p.value ? `2px solid ${color}` : "2px solid transparent",
                 }}
               >
-                <span className="w-2.5 h-2.5 rounded-full inline-block" style={{ backgroundColor: p.value, border: "1px solid rgba(0,0,0,0.1)" }} />
+                <span className="w-2 h-2 rounded-full inline-block" style={{ backgroundColor: p.value, border: "1px solid rgba(0,0,0,0.1)" }} />
                 {p.label}
               </button>
             ))}
           </div>
-          <p className="text-[11px] font-mono mb-1" style={{ color: "#999" }}>아이템 (한 줄에 하나씩)</p>
+          <p className="text-[9px] font-mono mb-0.5" style={{ color: "#999" }}>아이템 (한 줄에 하나씩)</p>
           <textarea
             value={editItems}
             onChange={(e) => setEditItems(e.target.value)}
-            className="w-full rounded-lg border p-3 text-[13px] leading-relaxed resize-none"
-            style={{ borderColor: "rgba(0,0,0,0.1)", color: "#333", minHeight: 200 }}
+            className="w-full rounded-md border p-2.5 text-[11px] leading-relaxed resize-none"
+            style={{ borderColor: "rgba(0,0,0,0.1)", color: "#333", minHeight: 170 }}
             placeholder="아이템을 한 줄에 하나씩 입력하세요..."
           />
-          <div className="flex gap-2 mt-2">
+          <div className="flex gap-1.5 mt-1.5">
             <button
               onClick={() => {
                 const lines = editItems.split("\n").map((l) => l.trim()).filter((l) => l.length > 0);
@@ -711,14 +711,14 @@ export default function CardNews({
                 });
                 setEditing(false);
               }}
-              className="text-[12px] px-4 py-2 rounded-lg font-medium text-white"
+              className="text-[10px] px-3 py-1.5 rounded-md font-medium text-white"
               style={{ backgroundColor: color }}
             >
               저장
             </button>
             <button
               onClick={() => setEditing(false)}
-              className="text-[12px] px-4 py-2 rounded-lg"
+              className="text-[10px] px-3 py-1.5 rounded-md"
               style={{ backgroundColor: "rgba(0,0,0,0.06)", color: "#666" }}
             >
               취소
