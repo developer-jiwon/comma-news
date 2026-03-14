@@ -147,12 +147,17 @@ export default function CardNews({
       if (!blob) return;
       const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
       if (isMobile) {
-        // 모바일: 이미지를 새 탭에 열어서 꾹 눌러 저장
-        const url = URL.createObjectURL(blob);
-        const w = window.open("");
-        if (w) {
-          w.document.write(`<html><head><title>꾹 눌러서 사진 저장</title><meta name="viewport" content="width=device-width,initial-scale=1"></head><body style="margin:0;display:flex;align-items:center;justify-content:center;min-height:100vh;background:#000"><img src="${url}" style="max-width:100%;max-height:100vh" /></body></html>`);
-          w.document.close();
+        // 모바일: share sheet로 "사진에 저장" 가능
+        const file = new File([blob], `comma-${currentCard}.png`, { type: "image/png" });
+        if (navigator.share && navigator.canShare?.({ files: [file] })) {
+          try { await navigator.share({ files: [file], title: "comma, 카드뉴스" }); } catch {}
+        } else {
+          // fallback: 다운로드
+          const link = document.createElement("a");
+          link.download = file.name;
+          link.href = URL.createObjectURL(blob);
+          link.click();
+          URL.revokeObjectURL(link.href);
         }
       } else {
         const link = document.createElement("a");
