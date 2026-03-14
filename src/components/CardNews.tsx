@@ -119,10 +119,31 @@ export default function CardNews({
   const [editTheme, setEditTheme] = useState<CardTheme>(cardTheme);
   const [editPillColor, setEditPillColor] = useState(pillColor);
   const [isLocal, setIsLocal] = useState(false);
+  const [isAuthed, setIsAuthed] = useState(false);
+  const [showPwModal, setShowPwModal] = useState(false);
+  const [pwInput, setPwInput] = useState("");
+  const [pwError, setPwError] = useState(false);
+
+  const EDIT_PW = "c0mm@_j1w0n!#2024$";
 
   useEffect(() => {
     setIsLocal(window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1");
+    setIsAuthed(sessionStorage.getItem("comma-edit-auth") === "1");
   }, []);
+
+  const handlePwSubmit = () => {
+    if (pwInput === EDIT_PW) {
+      setIsAuthed(true);
+      sessionStorage.setItem("comma-edit-auth", "1");
+      setShowPwModal(false);
+      setPwInput("");
+      setPwError(false);
+      // 인증 후 바로 편집 모드 진입
+      setEditTitle(title); setEditItems(items.join("\n")); setEditTitleSize(titleSize || 26); setEditNumbered(numbered); setEditTheme(THEMES[cardTheme] ? cardTheme : "black"); setEditPillColor(pillColor); setEditing(true);
+    } else {
+      setPwError(true);
+    }
+  };
 
   // Swipe support
   const touchStartX = useRef<number | null>(null);
@@ -261,7 +282,13 @@ export default function CardNews({
                 <div>
                   {onUpdate && !editing && (
                     <button
-                      onClick={() => { setEditTitle(title); setEditItems(items.join("\n")); setEditTitleSize(titleSize || 26); setEditNumbered(numbered); setEditTheme(THEMES[cardTheme] ? cardTheme : "black"); setEditPillColor(pillColor); setEditing(true); }}
+                      onClick={() => {
+                        if (isAuthed || isLocal) {
+                          setEditTitle(title); setEditItems(items.join("\n")); setEditTitleSize(titleSize || 26); setEditNumbered(numbered); setEditTheme(THEMES[cardTheme] ? cardTheme : "black"); setEditPillColor(pillColor); setEditing(true);
+                        } else {
+                          setShowPwModal(true); setPwInput(""); setPwError(false);
+                        }
+                      }}
                       className="text-[10px] px-3 py-1 rounded-full transition-all hover:opacity-80 backdrop-blur-sm"
                       style={{ backgroundColor: "rgba(255,255,255,0.15)", color: "rgba(255,255,255,0.8)", border: "1px solid rgba(255,255,255,0.15)" }}
                     >
@@ -479,6 +506,56 @@ export default function CardNews({
 
       {/* no action buttons below card */}
       </div>
+
+      {/* Password modal */}
+      {showPwModal && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center"
+          style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
+          onClick={() => setShowPwModal(false)}
+        >
+          <div
+            className="bg-white rounded-2xl p-6 w-[320px] shadow-xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <p className="text-[14px] font-semibold mb-1" style={{ color: "#2C2C2C" }}>
+              편집 비밀번호
+            </p>
+            <p className="text-[11px] mb-4" style={{ color: "#999" }}>
+              편집하려면 비밀번호를 입력하세요
+            </p>
+            <input
+              type="password"
+              value={pwInput}
+              onChange={(e) => { setPwInput(e.target.value); setPwError(false); }}
+              placeholder="비밀번호"
+              className="w-full rounded-lg border px-3 py-2.5 text-[13px] mb-2"
+              style={{ borderColor: pwError ? "#e55" : "rgba(0,0,0,0.12)", color: "#333" }}
+              autoFocus
+              onKeyDown={(e) => { if (e.key === "Enter") handlePwSubmit(); }}
+            />
+            {pwError && (
+              <p className="text-[11px] mb-2" style={{ color: "#e55" }}>비밀번호가 틀렸습니다</p>
+            )}
+            <div className="flex gap-2 justify-end mt-2">
+              <button
+                onClick={() => setShowPwModal(false)}
+                className="text-[12px] px-4 py-2 rounded-lg"
+                style={{ backgroundColor: "rgba(0,0,0,0.06)", color: "#666" }}
+              >
+                취소
+              </button>
+              <button
+                onClick={handlePwSubmit}
+                className="text-[12px] px-4 py-2 rounded-lg font-medium text-white"
+                style={{ backgroundColor: "#2C2C2C" }}
+              >
+                확인
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Inline editor */}
       {editing && onUpdate && (
